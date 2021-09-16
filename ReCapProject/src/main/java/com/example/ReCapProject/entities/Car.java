@@ -34,6 +34,7 @@ public class Car {
 	@Column(name = "description")
 	private String description;
 	
+	
 	@OneToOne
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
