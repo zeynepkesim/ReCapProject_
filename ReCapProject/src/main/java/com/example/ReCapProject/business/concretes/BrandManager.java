@@ -22,21 +22,20 @@ public class BrandManager implements BrandService{
 	@Override
 	public Result add(Brand entity) {
 		this.brandDao.save(entity);
-		return new SuccessResult("Başarıyla eklendi.");
-		
+		return new SuccessResult("Data has been added!");
 	}
 
 	@Override
 	public Result update(Brand entity) {
 		this.brandDao.save(entity);
-		return new SuccessResult("Başarıyla güncellendi.");
-		
+		return new SuccessResult("Data has been updated!");
 	}
 
 	@Override
 	public Result delete(Integer brandId) {
 		this.brandDao.deleteById(brandId);
-		return new SuccessResult("Başarıyla silindi.");		
+		return new SuccessResult("Data has been deleted!");
 	}
+
 	
 }

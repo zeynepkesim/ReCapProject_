@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CarDetailDto implements Dto{
+public class CorporateCustomerDto implements Dto {
 
-	private double dailyPrice;
-	private String modelName;
-	private String brandName;
-	private int modelYear;
-	private String colorName;
+	private int userId;
+	private String email;
+	private String companyName;
+	
 	
 }

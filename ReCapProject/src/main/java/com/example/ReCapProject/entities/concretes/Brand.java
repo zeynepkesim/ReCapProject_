@@ -2,6 +2,7 @@ package com.example.ReCapProject.entities.concretes;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "brands")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "cars"})
+@Table(name = "brands")
 public class Brand {
 
 	@Id
@@ -32,8 +33,13 @@ public class Brand {
 	@Column(name = "brand_name")
 	private String brandName;
 	
+	@Column(name = "model_name")
+	private String modelName;
 	
-	@OneToMany(mappedBy = "brand")
+	@Column(name = "model_year")
+	private int modelYear;
+	
+	@OneToMany(mappedBy = "brand", cascade = CascadeType.MERGE)
 	private List<Car> cars;
 	
 }

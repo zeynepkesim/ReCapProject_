@@ -1,21 +1,21 @@
 package com.example.ReCapProject.core.utilities.results;
 
-public class DataResult<E> extends Result {
+public class DataResult<T> extends Result{
 	
-	private E data;
+	private T data;
 	
-	public DataResult(boolean success, E data) {
+	public DataResult(T data, boolean success) {
 		super(success);
 		this.data = data;
 	}
 	
-	public DataResult(boolean success, String message, E data) {
+	public DataResult(T data, boolean success, String message) {
 		super(success, message);
-		this.data = data;		
+		this.data = data;
 	}
 
-	public E getData() {
+	public T getData() {
 		return data;
-	}	
-
+	}
+	
 }

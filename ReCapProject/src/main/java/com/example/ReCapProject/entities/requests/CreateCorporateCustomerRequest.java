@@ -1,0 +1,21 @@
+package com.example.ReCapProject.entities.requests;
+
+import com.example.ReCapProject.core.entities.abstracts.Request;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class CreateCorporateCustomerRequest implements Request{
+
+	private int corporateCustomerId;
+	private String companyName;
+	private String email;
+	private String password;
+	
+}

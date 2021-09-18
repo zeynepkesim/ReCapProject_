@@ -3,9 +3,9 @@ package com.example.ReCapProject.dataAccess.abstracts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.ReCapProject.entities.concretes.Color;
+import com.example.ReCapProject.entities.concretes.ApplicationUser;
 
 @Repository
-public interface ColorDao extends JpaRepository<Color, Integer>{
-	Color getByColorId(int colorId);
+public interface ApplicationUserDao extends JpaRepository<ApplicationUser, Integer>{
+
 }

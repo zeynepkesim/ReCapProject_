@@ -1,21 +1,21 @@
 package com.example.ReCapProject.core.utilities.results;
 
-public class SuccessDataResult<E> extends DataResult<E> {
+public class SuccessDataResult<T> extends DataResult<T> {
 
-	public SuccessDataResult(E data) {
-		super(true, data);
+	public SuccessDataResult(T data) {
+		super(data, true);
 	}
-	 
+	
+	public SuccessDataResult(T data, String message) {
+		super(data, true, message);
+	}
+	
 	public SuccessDataResult(String message) {
-		super(true, message, null);
+		super(null, true, message);
 	}
 	
-	public SuccessDataResult(String message, E data) {
-		super(true, message, data);
-	}
-	
-	public SuccessDataResult() {
-		super(true, null);
+	public SuccessDataResult( ) {
+		super(null, true);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.example.ReCapProject.entities.dtos;
 
+import java.util.Date;
+
 import com.example.ReCapProject.core.entities.abstracts.Dto;
 
 import lombok.AllArgsConstructor;
@@ -9,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CarDetailDto implements Dto{
-
-	private double dailyPrice;
-	private String modelName;
+public class RentalDto implements Dto{
+	
+	private int rentalId;
+	private Date rentDate;
+	private Date returnDate;
 	private String brandName;
-	private int modelYear;
-	private String colorName;
+	private String modelName;
 	
 }

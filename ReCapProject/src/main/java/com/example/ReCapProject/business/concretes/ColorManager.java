@@ -22,21 +22,20 @@ public class ColorManager implements ColorService{
 	@Override
 	public Result add(Color entity) {
 		this.colorDao.save(entity);
-		return new SuccessResult("Başarıyla eklendi.");
-		
+		return new SuccessResult("Data has been added!");
 	}
 
 	@Override
 	public Result update(Color entity) {
 		this.colorDao.save(entity);
-		return new SuccessResult("Başarıyla güncellendi.");
+		return new SuccessResult("Data has been updated!");
 		
 	}
 
 	@Override
 	public Result delete(Integer colorId) {
 		this.colorDao.deleteById(colorId);
-		return new SuccessResult("Başarıyla silindi.");
+		return new SuccessResult("Data has been deleted!");
 	}
 
 }
