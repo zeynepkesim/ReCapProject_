@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -23,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "carImages"}) 
 @Table(name = "cars")
 public class Car {
 
@@ -38,17 +40,22 @@ public class Car {
 	@Column(name = "description")
 	private String description;
 	
+	@Nullable
+	@Column(name = "is_available", columnDefinition = "boolean default true")
+	private boolean isAvailable = true;
 	
-	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "color_id")
 	private Color color;
 	
 	@OneToMany(mappedBy = "car")
 	private List<Rental> rentals;
+	
+	@OneToMany(mappedBy = "car")
+	private List<CarImage> carImages;
 	
 }

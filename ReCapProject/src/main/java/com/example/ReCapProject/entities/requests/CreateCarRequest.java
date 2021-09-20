@@ -13,12 +13,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateCarRequest implements Request {
 
-	private int carId;
 	private String brandName;
 	private String modelName;
 	private String description;
 	private String colorName;
 	private int modelYear;
 	private double dailyPrice;
+	// private boolean isAvailable; Put this in UpdateCarRequest
 	
 }

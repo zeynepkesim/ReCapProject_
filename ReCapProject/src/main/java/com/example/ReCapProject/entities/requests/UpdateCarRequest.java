@@ -1,9 +1,5 @@
 package com.example.ReCapProject.entities.requests;
 
-import java.util.Date;
-
-import com.example.ReCapProject.core.entities.abstracts.Request;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +9,11 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRentalRequest implements Request{
+public class UpdateCarRequest {
 	
 	private int carId;
-	private int userId;
-	private Date rentDate;
-	private Date returnDate;
-	
+	private String description;
+	private double dailyPrice;
+	private boolean isAvailable;
+
 }

@@ -16,7 +16,9 @@ public class RentalDto implements Dto{
 	private int rentalId;
 	private Date rentDate;
 	private Date returnDate;
+	private boolean isReturned;
 	private String brandName;
 	private String modelName;
+	private int modelYear;
 	
 }

@@ -14,6 +14,7 @@ import com.example.ReCapProject.core.utilities.results.SuccessResult;
 import com.example.ReCapProject.dataAccess.abstracts.IndividualCustomerDao;
 import com.example.ReCapProject.entities.concretes.IndividualCustomer;
 import com.example.ReCapProject.entities.requests.CreateIndividualCustomerRequest;
+import com.example.ReCapProject.entities.requests.UpdateIndividualCustomerRequest;
 
 @Service
 public class IndividualCustomerManager implements IndividualCustomerService{
@@ -40,14 +41,13 @@ public class IndividualCustomerManager implements IndividualCustomerService{
 	}
 
 	@Override
-	public Result update(CreateIndividualCustomerRequest entity) {
+	public Result update(UpdateIndividualCustomerRequest entity) {
 		
-		IndividualCustomer individualCustomer = new IndividualCustomer();
+		IndividualCustomer individualCustomer = individualCustomerDao.getById(entity.getIndividualCustomerId());
 		individualCustomer.setFirstName(entity.getFirstName());
 		individualCustomer.setLastName(entity.getLastName());
 		individualCustomer.setEmail(entity.getEmail());
 		individualCustomer.setPassword(entity.getPassword());
-		individualCustomer.setUserId(entity.getIndividualCustomerId());
 		
 		this.individualCustomerDao.save(individualCustomer);
 		return new SuccessResult(Messages.CUSTOMER_UPDATED);

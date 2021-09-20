@@ -15,11 +15,17 @@ public interface CarDao extends JpaRepository<Car, Integer>{
 	Car getByCarId(int carId);
 	
 	@Query("Select new com.example.ReCapProject.entities.dtos.CarDetailDto"
-	  		+ " (c.dailyPrice, b.modelName, b.brandName, b.modelYear, co.colorName)"
+	  		+ " (c.dailyPrice, b.modelName, b.brandName, b.modelYear, co.colorName, c.isAvailable)"
 	  		+ " From Car c Inner Join c.brand b"
 			+ " Inner Join c.color co")
-	
 	List<CarDetailDto> getCarDetails();
 	
+	boolean existsByIsAvailableIsTrue();
 	
+	boolean existsByCarImagesIsNull();
+	
+	List<Car> getByBrand_BrandName(String brandName);
+	
+	List<Car> getByColor_ColorName(String colorName);
+
 }

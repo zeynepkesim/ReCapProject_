@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CorporateCustomerDto implements Dto {
-
+	
+	// Learn how to draw info from List of Dto
+	
 	private int userId;
 	private String email;
 	private String companyName;
-	
 	
 }

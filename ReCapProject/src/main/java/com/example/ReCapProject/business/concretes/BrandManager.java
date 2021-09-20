@@ -26,16 +26,9 @@ public class BrandManager implements BrandService{
 	}
 
 	@Override
-	public Result update(Brand entity) {
-		this.brandDao.save(entity);
-		return new SuccessResult("Data has been updated!");
-	}
-
-	@Override
 	public Result delete(Integer brandId) {
 		this.brandDao.deleteById(brandId);
-		return new SuccessResult("Data has been deleted!");
+		return new SuccessResult("Data has been deleted!!");
 	}
-
 	
 }

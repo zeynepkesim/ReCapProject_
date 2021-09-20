@@ -20,6 +20,8 @@ import com.example.ReCapProject.entities.concretes.CorporateCustomer;
 import com.example.ReCapProject.entities.concretes.IndividualCustomer;
 import com.example.ReCapProject.entities.requests.CreateCorporateCustomerRequest;
 import com.example.ReCapProject.entities.requests.CreateIndividualCustomerRequest;
+import com.example.ReCapProject.entities.requests.UpdateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.UpdateIndividualCustomerRequest;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -35,44 +37,45 @@ public class CustomersController {
 		this.individualCustomerService = individualCustomerService;
 	}
 	
+		
 	@PostMapping("/addindividualcustomer")
 	public Result add(@Valid CreateIndividualCustomerRequest customer) {
 		return this.individualCustomerService.add(customer);
 	}
 	
+	@PostMapping("/updateindividualcustomer")
+	public Result update(@Valid UpdateIndividualCustomerRequest customer) {
+		return this.individualCustomerService.update(customer);
+	}
+	
+	@DeleteMapping("/deleteindividualtecustomer")
+	public Result deleteIndividual(int individualCustomerId){
+		return this.individualCustomerService.delete(individualCustomerId);
+	}
+		
 	@PostMapping("/addcorporatecustomer")
 	public Result add(@Valid CreateCorporateCustomerRequest customer) {
 		return this.corporateCustomerService.add(customer);
 	}
 	
 	@PostMapping("/updatecorporatecustomer")
-	public Result update(@Valid CreateCorporateCustomerRequest customer) {
+	public Result update(@Valid UpdateCorporateCustomerRequest customer) {
 		return this.corporateCustomerService.update(customer);
 	}
 	
-	@PostMapping("/updateindividualcustomer")
-	public Result update(@Valid CreateIndividualCustomerRequest customer) {
-		return this.individualCustomerService.update(customer);
-	}
-	
 	@DeleteMapping("/deletecorporatecustomer")
-	public Result deleteCorporateCustomer(int corporateCustomerId) {
+	public Result deleteCorporate(int corporateCustomerId){
 		return this.corporateCustomerService.delete(corporateCustomerId);
 	}
 	
-	@DeleteMapping("/deleteindividualcustomer")
-	public Result deleteIndividualCustomer(int individualCustomerId) {
-		return this.individualCustomerService.delete(individualCustomerId);
-	}
-	
 	@GetMapping("/getallcorporatecustomers")
-	public DataResult<List<CorporateCustomer>> getCorporateCustomers() {
+	public DataResult<List<CorporateCustomer>> getCorporateCustomers(){
 		return this.corporateCustomerService.getAll();
 	}
-		
+	
 	@GetMapping("/getallindividualcustomers")
-	public DataResult<List<IndividualCustomer>> getIndividualCustomers() {
+	public DataResult<List<IndividualCustomer>> getIndividualCustomers(){
 		return this.individualCustomerService.getAll();
 	}
-		
+	
 }

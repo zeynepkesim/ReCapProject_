@@ -36,7 +36,6 @@ public class ReCapProjectApplication {
 				.build();
 	}
 	
-	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exception) {
@@ -44,12 +43,11 @@ public class ReCapProjectApplication {
 		Map<String, String> validationErrors = new HashMap<String, String>();
 		
 		for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
-			validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
+			validationErrors.put(fieldError.getField(),	fieldError.getDefaultMessage());
 		}
 		
-		ErrorDataResult<Object> error = new ErrorDataResult<Object>(validationErrors, "Doğrulama Hataları");
+		ErrorDataResult<Object> error = new ErrorDataResult<Object>(validationErrors, "Validation Errors");
 		return error;
-				
-		}
+	}
 
 }

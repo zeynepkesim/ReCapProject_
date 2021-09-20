@@ -26,13 +26,6 @@ public class ColorManager implements ColorService{
 	}
 
 	@Override
-	public Result update(Color entity) {
-		this.colorDao.save(entity);
-		return new SuccessResult("Data has been updated!");
-		
-	}
-
-	@Override
 	public Result delete(Integer colorId) {
 		this.colorDao.deleteById(colorId);
 		return new SuccessResult("Data has been deleted!");

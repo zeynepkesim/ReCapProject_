@@ -14,6 +14,7 @@ import com.example.ReCapProject.core.utilities.results.SuccessResult;
 import com.example.ReCapProject.dataAccess.abstracts.CorporateCustomerDao;
 import com.example.ReCapProject.entities.concretes.CorporateCustomer;
 import com.example.ReCapProject.entities.requests.CreateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.UpdateCorporateCustomerRequest;
 
 @Service
 public class CorporateCustomerManager implements CorporateCustomerService {
@@ -39,13 +40,12 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	}
 
 	@Override
-	public Result update(CreateCorporateCustomerRequest  entity) {
+	public Result update(UpdateCorporateCustomerRequest  entity) {
 		
-		CorporateCustomer corporateCustomer = new CorporateCustomer();
+		CorporateCustomer corporateCustomer = corporateCustomerDao.getById(entity.getCorporateCustomerId());
 		corporateCustomer.setCompanyName(entity.getCompanyName());
 		corporateCustomer.setEmail(entity.getEmail());
 		corporateCustomer.setPassword(entity.getPassword());
-		corporateCustomer.setUserId(entity.getCorporateCustomerId());
 		
 		this.corporateCustomerDao.save(corporateCustomer);
 		return new SuccessResult(Messages.CUSTOMER_UPDATED);

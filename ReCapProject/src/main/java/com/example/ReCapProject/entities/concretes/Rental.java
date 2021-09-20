@@ -37,9 +37,6 @@ public class Rental {
 	@Column(name = "return_date")
 	private Date returnDate;
 	
-	@Column(name = "is_returned", columnDefinition = "boolean default false")
-	private boolean isReturned;
-	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "car_id")
 	private Car car;

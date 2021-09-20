@@ -13,12 +13,13 @@ import com.example.ReCapProject.entities.dtos.RentalDto;
 public interface RentalDao extends JpaRepository<Rental, Integer>{
 	
 	@Query("Select new com.example.ReCapProject.entities.dtos.RentalDto"
-			+ " (r.rentalId, r.rentDate, r.returnDate, b.modelName, b.brandName)"
+			+ " (r.rentalId, r.rentDate, r.returnDate, c.isAvailable, b.modelName, b.brandName, b.modelYear)"
 			+ " From Rental r Inner Join r.car c"
 			+ " Inner Join c.brand b")
+	List<RentalDto> getCarAndRentalDetail();
 	
-	List<RentalDto> getCarAndRentalDetails();
+	List<Rental> getByCar_IsAvailableIsFalse();
 	
-	boolean existsByIsReturnedIsFalse();
+	List<Rental> getByCar_IsAvailableIsTrue();
 	
 }

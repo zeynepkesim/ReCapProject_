@@ -11,13 +11,10 @@ import com.example.ReCapProject.entities.dtos.CorporateCustomerDto;
 
 @Repository
 public interface CorporateCustomerDao extends JpaRepository<CorporateCustomer, Integer>{
-	
+
 	@Query("Select new com.example.ReCapProject.entities.dtos.CorporateCustomerDto"
-			+ " (cc.userId, cc.email, cc.companyName)"
-			+ " From CorporateCustomer cc")
+	  		+ " (c.userId, c.email , c.companyName)"
+	  		+ " From CorporateCustomer c")
+	List<CorporateCustomerDto> getCarDetails();
 	
-	List<CorporateCustomerDto> getCorporateCustomerDetails();
-	
-
-
 }
