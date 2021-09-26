@@ -18,10 +18,12 @@ import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.CorporateCustomer;
 import com.example.ReCapProject.entities.concretes.IndividualCustomer;
-import com.example.ReCapProject.entities.requests.CreateCorporateCustomerRequest;
-import com.example.ReCapProject.entities.requests.CreateIndividualCustomerRequest;
-import com.example.ReCapProject.entities.requests.UpdateCorporateCustomerRequest;
-import com.example.ReCapProject.entities.requests.UpdateIndividualCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.CreateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.DeleteCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.UpdateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.individualCustomer.CreateIndividualCustomerRequest;
+import com.example.ReCapProject.entities.requests.individualCustomer.DeleteIndividualCustomerRequest;
+import com.example.ReCapProject.entities.requests.individualCustomer.UpdateIndividualCustomerRequest;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -37,7 +39,8 @@ public class CustomersController {
 		this.individualCustomerService = individualCustomerService;
 	}
 	
-		
+	
+	
 	@PostMapping("/addindividualcustomer")
 	public Result add(@Valid CreateIndividualCustomerRequest customer) {
 		return this.individualCustomerService.add(customer);
@@ -49,10 +52,12 @@ public class CustomersController {
 	}
 	
 	@DeleteMapping("/deleteindividualtecustomer")
-	public Result deleteIndividual(int individualCustomerId){
+	public Result deleteIndividual(DeleteIndividualCustomerRequest individualCustomerId){
 		return this.individualCustomerService.delete(individualCustomerId);
 	}
-		
+	
+	
+	
 	@PostMapping("/addcorporatecustomer")
 	public Result add(@Valid CreateCorporateCustomerRequest customer) {
 		return this.corporateCustomerService.add(customer);
@@ -64,10 +69,12 @@ public class CustomersController {
 	}
 	
 	@DeleteMapping("/deletecorporatecustomer")
-	public Result deleteCorporate(int corporateCustomerId){
+	public Result deleteCorporate(DeleteCorporateCustomerRequest corporateCustomerId){
 		return this.corporateCustomerService.delete(corporateCustomerId);
 	}
 	
+	
+
 	@GetMapping("/getallcorporatecustomers")
 	public DataResult<List<CorporateCustomer>> getCorporateCustomers(){
 		return this.corporateCustomerService.getAll();

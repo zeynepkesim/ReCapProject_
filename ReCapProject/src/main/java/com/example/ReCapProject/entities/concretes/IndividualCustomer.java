@@ -28,4 +28,8 @@ public class IndividualCustomer extends Customer {
 	@Column(name = "last_name")
 	private String lastName;
 	
+	@NotNull
+	@Column(name = "national_id_number")
+	private String nationalIdNumber;
+	
 }

@@ -1,21 +1,22 @@
 package com.example.ReCapProject.business.abstracts;
 
+import java.io.IOException;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
-import com.example.ReCapProject.core.business.abstracts.BaseService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.CarImage;
-import com.example.ReCapProject.entities.requests.CreateCarImageRequest;
-import com.example.ReCapProject.entities.requests.UpdateCarImageRequest;
+import com.example.ReCapProject.entities.requests.carImage.CreateCarImageRequest;
+import com.example.ReCapProject.entities.requests.carImage.DeleteCarImageRequest;
+import com.example.ReCapProject.entities.requests.carImage.UpdateCarImageRequest;
 
-@Repository
-public interface CarImageService extends BaseService<CreateCarImageRequest, Integer> {
+public interface CarImageService {
+
+	Result add(CreateCarImageRequest entity) throws IOException;
+	Result update(UpdateCarImageRequest entity) throws IOException;
+	Result delete(DeleteCarImageRequest entity);
 	
-	Result update(UpdateCarImageRequest entity);
-	DataResult<List<CarImage>> getCarImagesByCarId(int carId);
+	DataResult<List<CarImage>> getImagesByCarId(int CarId);
 	DataResult<List<CarImage>> getAll();
-
+	
 }

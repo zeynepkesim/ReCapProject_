@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.example.ReCapProject.entities.concretes.Color;
 
 @Repository
-public interface ColorDao extends JpaRepository<Color, Integer>{
+public interface ColorDao extends JpaRepository<Color, Integer> {
 	
 	Color getByColorId(int colorId);
-
+	
 }

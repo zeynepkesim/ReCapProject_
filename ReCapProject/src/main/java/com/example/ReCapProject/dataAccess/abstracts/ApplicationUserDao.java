@@ -8,4 +8,8 @@ import com.example.ReCapProject.entities.concretes.ApplicationUser;
 @Repository
 public interface ApplicationUserDao extends JpaRepository<ApplicationUser, Integer>{
 
+	boolean existsByEmail(String email);
+	
+	ApplicationUser getByEmail(String email);
+	
 }

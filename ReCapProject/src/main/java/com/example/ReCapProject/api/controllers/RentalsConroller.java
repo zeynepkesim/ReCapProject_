@@ -17,8 +17,9 @@ import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.Rental;
 import com.example.ReCapProject.entities.dtos.RentalDto;
-import com.example.ReCapProject.entities.requests.CreateRentalRequest;
-import com.example.ReCapProject.entities.requests.UpdateRentalRequest;
+import com.example.ReCapProject.entities.requests.rental.CreateRentalRequest;
+import com.example.ReCapProject.entities.requests.rental.DeleteRentalRequest;
+import com.example.ReCapProject.entities.requests.rental.UpdateRentalRequest;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -28,13 +29,18 @@ public class RentalsConroller {
 	private RentalService rentalService;
 
 	@Autowired
-	public RentalsConroller(RentalService rentalService){
+	public RentalsConroller(RentalService rentalService) {
 		this.rentalService = rentalService;
 	}
 	
-	@PostMapping("/add")
-	public Result add(@Valid CreateRentalRequest rental){
-		return this.rentalService.add(rental);
+	@PostMapping("/addforcorporate")
+	public Result addForCorporate(@Valid CreateRentalRequest rental) {
+		return this.rentalService.addForCorporate(rental);
+	}
+	
+	@PostMapping("/addforindividual")
+	public Result addForIndividual(@Valid CreateRentalRequest rental) {
+		return this.rentalService.addForIndividual(rental);
 	}
 	
 	@PostMapping("/update")
@@ -43,27 +49,27 @@ public class RentalsConroller {
 	}
 	
 	@DeleteMapping("/delete")
-	public Result delete(int rentalId){
+	public Result delete(DeleteRentalRequest rentalId) {
 		return this.rentalService.delete(rentalId);
 	}
 	
 	@GetMapping("/getall") 
-	public DataResult<List<Rental>> getAll(){
+	public DataResult<List<Rental>> getAll() {
 		return this.rentalService.getAll();
 	}
 	
 	@GetMapping("/getcarandrentaldetails")
-	public DataResult<List<RentalDto>> getCarAndRentalDetails(){
+	public DataResult<List<RentalDto>> getCarAndRentalDetails() {
 		return this.rentalService.getCarAndRentalDetails();
 	}
 	
 	@GetMapping("/getopenrentals")
-	public DataResult<List<Rental>> getOpenRentals(){
+	public DataResult<List<Rental>> getOpenRentals() {
 		return this.rentalService.getOpenRentals();
 	}
 	
 	@GetMapping("/getclosedrentals")
-	public DataResult<List<Rental>> getClosedRentals(){
+	public DataResult<List<Rental>> getClosedRentals() {
 		return this.rentalService.getClosedRentals();
 	}
 	

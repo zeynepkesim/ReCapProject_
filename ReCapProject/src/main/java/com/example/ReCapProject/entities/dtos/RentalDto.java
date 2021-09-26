@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RentalDto implements Dto{
+public class RentalDto implements Dto {
 	
 	private int rentalId;
 	private Date rentDate;

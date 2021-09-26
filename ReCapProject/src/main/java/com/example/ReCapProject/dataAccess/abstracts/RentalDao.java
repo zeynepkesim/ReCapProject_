@@ -10,7 +10,7 @@ import com.example.ReCapProject.entities.concretes.Rental;
 import com.example.ReCapProject.entities.dtos.RentalDto;
 
 @Repository
-public interface RentalDao extends JpaRepository<Rental, Integer>{
+public interface RentalDao extends JpaRepository<Rental, Integer> {
 	
 	@Query("Select new com.example.ReCapProject.entities.dtos.RentalDto"
 			+ " (r.rentalId, r.rentDate, r.returnDate, c.isAvailable, b.modelName, b.brandName, b.modelYear)"
@@ -19,7 +19,6 @@ public interface RentalDao extends JpaRepository<Rental, Integer>{
 	List<RentalDto> getCarAndRentalDetail();
 	
 	List<Rental> getByCar_IsAvailableIsFalse();
-	
 	List<Rental> getByCar_IsAvailableIsTrue();
 	
 }

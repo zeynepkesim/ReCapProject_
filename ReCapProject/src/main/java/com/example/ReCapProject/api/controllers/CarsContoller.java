@@ -17,8 +17,9 @@ import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.Car;
 import com.example.ReCapProject.entities.dtos.CarDetailDto;
-import com.example.ReCapProject.entities.requests.CreateCarRequest;
-import com.example.ReCapProject.entities.requests.UpdateCarRequest;
+import com.example.ReCapProject.entities.requests.car.CreateCarRequest;
+import com.example.ReCapProject.entities.requests.car.DeleteCarRequest;
+import com.example.ReCapProject.entities.requests.car.UpdateCarRequest;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -28,43 +29,48 @@ public class CarsContoller {
 	private CarService carService;
 
 	@Autowired
-	public CarsContoller(CarService carService){
+	public CarsContoller(CarService carService) {
 		this.carService = carService;
 	}
 	
 	@PostMapping("/add")
-	public Result add(@Valid CreateCarRequest car){
+	public Result add(@Valid CreateCarRequest car) {
 		return this.carService.add(car);
 	}
 	
 	@PostMapping("/update")
-	public Result update(@Valid UpdateCarRequest car){
+	public Result update(@Valid UpdateCarRequest car) {
 		return this.carService.update(car);
 	}
 	
 	@DeleteMapping("/delete")
-	public Result delete(int carId){
+	public Result delete(DeleteCarRequest carId){
 		return this.carService.delete(carId);
 	}
 	
-	@GetMapping("/getallcars")
-	public DataResult<List<Car>> getAllCars() {
+	@GetMapping("/getall")
+	public DataResult<List<Car>> getAll() {
 		return this.carService.getAll();
 	}
 	
 	@GetMapping("/getcarsdetail")
-	public DataResult<List<CarDetailDto>> getCarsDetail(){
+	public DataResult<List<CarDetailDto>> getCarsDetail() {
 		return this.carService.getCarsDetail();
 	}
 	
+	@GetMapping("/getcarbycolorname")
+	public DataResult<List<Car>> getByColorName(String colorName) {
+		return this.carService.getCarByColorName(colorName);
+	}
+	
 	@GetMapping("/getcarbybrandname")
-	public DataResult<List<Car>> getCarByBrandName(String brandName){
+	public DataResult<List<Car>> getByBrandName(String brandName) {
 		return this.carService.getCarByBrandName(brandName);
 	}
 	
-	@GetMapping("/getcarbycolorname")
-	public DataResult<List<Car>> getCarByColorName(String colorName){
-		return this.carService.getCarByColorName(colorName);
+	@GetMapping("/getavailablecars")
+	public DataResult<List<Car>> getAvailableCars() {
+		return this.carService.getAvailableCars();
 	}
-		
+	
 }

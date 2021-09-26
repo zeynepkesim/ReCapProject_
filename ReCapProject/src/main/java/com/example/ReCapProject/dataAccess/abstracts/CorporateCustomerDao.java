@@ -10,7 +10,7 @@ import com.example.ReCapProject.entities.concretes.CorporateCustomer;
 import com.example.ReCapProject.entities.dtos.CorporateCustomerDto;
 
 @Repository
-public interface CorporateCustomerDao extends JpaRepository<CorporateCustomer, Integer>{
+public interface CorporateCustomerDao extends JpaRepository<CorporateCustomer, Integer> {
 
 	@Query("Select new com.example.ReCapProject.entities.dtos.CorporateCustomerDto"
 	  		+ " (c.userId, c.email , c.companyName)"

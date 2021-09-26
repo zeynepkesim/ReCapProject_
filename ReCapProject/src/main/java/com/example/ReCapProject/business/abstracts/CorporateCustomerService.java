@@ -2,16 +2,19 @@ package com.example.ReCapProject.business.abstracts;
 
 import java.util.List;
 
-import com.example.ReCapProject.core.business.abstracts.BaseService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.CorporateCustomer;
-import com.example.ReCapProject.entities.requests.CreateCorporateCustomerRequest;
-import com.example.ReCapProject.entities.requests.UpdateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.CreateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.DeleteCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.UpdateCorporateCustomerRequest;
 
-public interface CorporateCustomerService extends BaseService<CreateCorporateCustomerRequest, Integer> {
+public interface CorporateCustomerService {
 
+	Result add(CreateCorporateCustomerRequest entity);
 	Result update(UpdateCorporateCustomerRequest entity);
+	Result delete(DeleteCorporateCustomerRequest entity);
+	
 	DataResult<List<CorporateCustomer>> getAll();
 	
 }

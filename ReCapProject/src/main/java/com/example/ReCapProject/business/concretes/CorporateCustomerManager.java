@@ -6,15 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ReCapProject.business.abstracts.CorporateCustomerService;
-import com.example.ReCapProject.core.constants.Messages;
+import com.example.ReCapProject.business.constants.Messages;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
 import com.example.ReCapProject.dataAccess.abstracts.CorporateCustomerDao;
 import com.example.ReCapProject.entities.concretes.CorporateCustomer;
-import com.example.ReCapProject.entities.requests.CreateCorporateCustomerRequest;
-import com.example.ReCapProject.entities.requests.UpdateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.CreateCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.DeleteCorporateCustomerRequest;
+import com.example.ReCapProject.entities.requests.corporateCustomer.UpdateCorporateCustomerRequest;
 
 @Service
 public class CorporateCustomerManager implements CorporateCustomerService {
@@ -33,7 +34,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		corporateCustomer.setCompanyName(entity.getCompanyName());
 		corporateCustomer.setEmail(entity.getEmail());
 		corporateCustomer.setPassword(entity.getPassword());
-		
+		corporateCustomer.setTaxNumber(entity.getTaxNumber());
 		
 		this.corporateCustomerDao.save(corporateCustomer);
 		return new SuccessResult(Messages.CUSTOMER_ADDED);
@@ -41,19 +42,20 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 	@Override
 	public Result update(UpdateCorporateCustomerRequest  entity) {
-		
+	
 		CorporateCustomer corporateCustomer = corporateCustomerDao.getById(entity.getCorporateCustomerId());
 		corporateCustomer.setCompanyName(entity.getCompanyName());
 		corporateCustomer.setEmail(entity.getEmail());
 		corporateCustomer.setPassword(entity.getPassword());
+		corporateCustomer.setTaxNumber(entity.getTaxNumber());
 		
 		this.corporateCustomerDao.save(corporateCustomer);
 		return new SuccessResult(Messages.CUSTOMER_UPDATED);
 	}
 
 	@Override
-	public Result delete(Integer customerId) {
-		this.corporateCustomerDao.deleteById(customerId);
+	public Result delete(DeleteCorporateCustomerRequest entity) {
+		this.corporateCustomerDao.deleteById(entity.getUserId());
 		return new SuccessResult(Messages.CUSTOMER_DELETED);
 	}
 

@@ -1,14 +1,13 @@
 package com.example.ReCapProject.business.concretes;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ReCapProject.business.abstracts.CarService;
-import com.example.ReCapProject.core.constants.Messages;
-import com.example.ReCapProject.core.constants.Paths;
+import com.example.ReCapProject.business.constants.Messages;
+import com.example.ReCapProject.business.paths.Paths;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
@@ -20,8 +19,9 @@ import com.example.ReCapProject.entities.concretes.Car;
 import com.example.ReCapProject.entities.concretes.CarImage;
 import com.example.ReCapProject.entities.concretes.Color;
 import com.example.ReCapProject.entities.dtos.CarDetailDto;
-import com.example.ReCapProject.entities.requests.CreateCarRequest;
-import com.example.ReCapProject.entities.requests.UpdateCarRequest;
+import com.example.ReCapProject.entities.requests.car.CreateCarRequest;
+import com.example.ReCapProject.entities.requests.car.DeleteCarRequest;
+import com.example.ReCapProject.entities.requests.car.UpdateCarRequest;
 
 @Service
 public class CarManager implements CarService {
@@ -39,30 +39,24 @@ public class CarManager implements CarService {
 	public Result add(CreateCarRequest entity) {
 		
 		Color color = new Color();
-		color.setColorName(entity.getColorName());
+		color.setColorId(entity.getColorId());
 		
 		Brand brand = new Brand();
-		brand.setBrandName(entity.getBrandName());
-		brand.setModelName(entity.getModelName());
-		brand.setModelYear(entity.getModelYear());
+		brand.setBrandId(entity.getBrandId());
 		
 		Car car = new Car();
 		car.setBrand(brand);
 		car.setColor(color);
 		car.setDailyPrice(entity.getDailyPrice());
 		car.setDescription(entity.getDescription());
+		car.setMinFindexPoint(entity.getMinFindexPoint());
 		
-		
-		if(this.carDao.existsByCarImagesIsNull()) {
-			
-			LocalDateTime date = LocalDateTime.now(); 
-			
+		// Default image
+		if(this.carImageDao.getByCar_CarId(car.getCarId()).isEmpty()) {
 			CarImage carImage = new CarImage();
-			carImage.setImagePath(Paths.defaultPath);
-			carImage.setDate(date);
+			carImage.setImagePath(Paths.CAR_IMAGE_DEFAULT_PATH);
 			carImage.setCar(car);
-			
-			this.carImageDao.save(carImage);
+			carImageDao.save(carImage);
 		}
 		
 		this.carDao.save(car);
@@ -72,19 +66,18 @@ public class CarManager implements CarService {
 	@Override
 	public Result update(UpdateCarRequest entity) {
 		
-		Car car = this.carDao.getById(entity.getCarId());
+		Car car = this.carDao.getByCarId(entity.getCarId());
 		car.setDailyPrice(entity.getDailyPrice());
 		car.setDescription(entity.getDescription());
 		car.setAvailable(entity.isAvailable());
-		//car.setCarId(entity.getCarId());
 		
 		this.carDao.save(car);
 		return new SuccessResult(Messages.CAR_UPDATED);
 	}
 
 	@Override
-	public Result delete(Integer carId) {
-		this.carDao.deleteById(carId);
+	public Result delete(DeleteCarRequest entity) {
+		this.carDao.deleteById(entity.getCarId());
 		return new SuccessResult(Messages.CAR_DELETED);
 	}
 
@@ -105,13 +98,18 @@ public class CarManager implements CarService {
 
 	@Override
 	public DataResult<List<Car>> getCarByBrandName(String brandName) {
-		return new SuccessDataResult<List<Car>>(this.carDao.getByBrand_BrandName(brandName), Messages.CARS_BY_BRAND_LISTED );
+		return new SuccessDataResult<List<Car>>(this.carDao.getByBrand_BrandName(brandName));
 	}
 
 	@Override
 	public DataResult<List<Car>> getCarByColorName(String colorName) {
-		return new SuccessDataResult<List<Car>>(this.carDao.getByColor_ColorName(colorName), Messages.CARS_BY_COLOR_LISTED);
+		return new SuccessDataResult<List<Car>>(this.carDao.getByColor_ColorName(colorName));
+	}
+
+	@Override
+	public DataResult<List<Car>> getAvailableCars() {
+		return new SuccessDataResult<List<Car>>(this.carDao.getByIsAvailableIsTrue());
 	}
 	
-
+	
 }

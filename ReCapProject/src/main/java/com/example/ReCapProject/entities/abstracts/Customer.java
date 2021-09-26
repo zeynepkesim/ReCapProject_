@@ -16,6 +16,6 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "customers")
-public class Customer extends ApplicationUser{
+public class Customer extends ApplicationUser { 
 
 }

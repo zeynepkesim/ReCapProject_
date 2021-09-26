@@ -44,5 +44,5 @@ public class Rental {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_id")
 	private ApplicationUser user;
-	
+		
 }

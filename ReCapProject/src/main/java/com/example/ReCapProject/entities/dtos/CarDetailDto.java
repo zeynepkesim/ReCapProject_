@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CarDetailDto implements Dto{
+public class CarDetailDto implements Dto {
 
 	private double dailyPrice;
 	private String modelName;

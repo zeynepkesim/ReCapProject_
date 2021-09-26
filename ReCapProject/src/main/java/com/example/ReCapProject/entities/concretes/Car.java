@@ -12,10 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals"}) 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "carMaintenances"})
 @Table(name = "cars")
 public class Car {
 
@@ -37,6 +39,11 @@ public class Car {
 	@Column(name = "daily_price")
 	private double dailyPrice;
 	
+	@Column(name = "min_findex_point")
+	private double minFindexPoint;
+	
+	@NotNull
+	@NotBlank
 	@Column(name = "description")
 	private String description;
 	
@@ -44,18 +51,21 @@ public class Car {
 	@Column(name = "is_available", columnDefinition = "boolean default true")
 	private boolean isAvailable = true;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "color_id")
 	private Color color;
 	
 	@OneToMany(mappedBy = "car")
 	private List<Rental> rentals;
 	
-	@OneToMany(mappedBy = "car")
+	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
 	private List<CarImage> carImages;
+	
+	@OneToMany(mappedBy = "car")
+	private List<CarMaintenance> carMaintenances;
 	
 }

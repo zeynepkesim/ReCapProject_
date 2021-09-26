@@ -4,13 +4,10 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.example.ReCapProject.core.entities.concretes.User;
-import com.example.ReCapProject.entities.abstracts.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -23,14 +20,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "creditCards"})
 @Table(name = "application_users")
-public class ApplicationUser extends User{
-
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Customer customer;
+public class ApplicationUser extends User {
 	
 	@OneToMany(mappedBy = "user")
 	private List<Rental> rentals;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<CreditCard> creditCards;
 	
 }

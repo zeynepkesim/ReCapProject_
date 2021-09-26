@@ -23,5 +23,9 @@ public class CorporateCustomer extends Customer{
 	@NotNull
 	@Column(name = "company_name")
 	private String companyName;
+	
+	@NotNull
+	@Column(name = "tax_number")
+	private String taxNumber;
 
 }
