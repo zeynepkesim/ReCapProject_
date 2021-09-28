@@ -19,7 +19,6 @@ import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
 import com.example.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
 import com.example.ReCapProject.dataAccess.abstracts.CarDao;
-import com.example.ReCapProject.dataAccess.abstracts.CarMaintenanceDao;
 import com.example.ReCapProject.dataAccess.abstracts.CorporateCustomerDao;
 import com.example.ReCapProject.dataAccess.abstracts.IndividualCustomerDao;
 import com.example.ReCapProject.dataAccess.abstracts.ReceiptDao;
@@ -46,7 +45,6 @@ public class RentalManager implements RentalService {
 	private IndividualCustomerDao individualCustomerDao;
 	private ReceiptDao receiptDao;
 	private ApplicationUserDao applicationUserDao;
-	private CarMaintenanceDao carMaintenanceDao;
 	
 	private FindexPointService findexPointService;
 	private CreditCardService creditCardService;
@@ -55,7 +53,7 @@ public class RentalManager implements RentalService {
 	
 	@Autowired
 	public RentalManager(RentalDao rentalDao, CarDao carDao, CorporateCustomerDao corporateCustomerDao, IndividualCustomerDao individualCustomerDao, 
-			ReceiptDao receiptDao, ApplicationUserDao applicationUserDao, CarMaintenanceDao carMaintenanceDao,
+			ReceiptDao receiptDao, ApplicationUserDao applicationUserDao, 
 			FindexPointService findexPointService, CreditCardService creditCardService, ReceiptService receiptService) {
 		
 		this.rentalDao = rentalDao;
@@ -64,7 +62,6 @@ public class RentalManager implements RentalService {
 		this.individualCustomerDao = individualCustomerDao;
 		this.receiptDao = receiptDao;
 		this.applicationUserDao = applicationUserDao;
-		this.carMaintenanceDao = carMaintenanceDao;
 		
 		this.findexPointService = findexPointService;
 		this.creditCardService = creditCardService;
@@ -74,8 +71,9 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result addForCorporate(CreateRentalRequest entity) {
-		var result = BusinessRules.run(checkIfCarIsAvailable(), checkIfCarIsNotInCarMaintenance(),
-				checkFindexPointsForCorporate(corporateCustomerDao.getById(entity.getUserId()), carDao.getById(entity.getCarId())));
+		var result = BusinessRules.run(checkIfCarIsAvailable(), 
+				checkFindexPointsForCorporate(corporateCustomerDao.getById(entity.getUserId()), carDao.getById(entity.getCarId())),
+				checkCarsPickUpCity(entity.getCarId(), entity.getPickUpCity()));
 		
 		if(result != null)
 			return result;
@@ -85,6 +83,7 @@ public class RentalManager implements RentalService {
 		
 		Car car = this.carDao.getByCarId(entity.getCarId());
 		car.setAvailable(false);
+		car.setCity(entity.getReturnCity());
 		
 		ApplicationUser user = this.applicationUserDao.getById(entity.getUserId());
 		
@@ -104,14 +103,14 @@ public class RentalManager implements RentalService {
 		creditCard.setSaveCard(entity.isSaveCard());
 		
 		if (!creditCardService.add(creditCard).isSuccess())
-			return new ErrorResult("Couldn't save the card!");
+			return new ErrorResult(Messages.CREDIT_CARD_IS_INVALID);
 		
 		// Can't be null if there is no saved card
 		if(!checkCardInfo(creditCard).isSuccess())
-			return new ErrorResult(Messages.CARD_INFO_IS_NULL);
+			return new ErrorResult(Messages.CREDIT_CARD_INFO_IS_NULL);
 		
-		Receipt receipt = receiptService.createReceipt(creditCard, entity).getData();
-		this.receiptDao.save(receipt);
+		
+		receiptService.createReceipt(creditCard, entity);
 		
 		this.rentalDao.save(rental);
 		this.carDao.save(car);
@@ -121,8 +120,9 @@ public class RentalManager implements RentalService {
 	
 	@Override
 	public Result addForIndividual(CreateRentalRequest entity) {
-		var result = BusinessRules.run(checkIfCarIsAvailable(), checkIfCarIsNotInCarMaintenance(),
-				checkFindexPointsForIndividual(individualCustomerDao.getById(entity.getUserId()), carDao.getByCarId(entity.getCarId())));
+		var result = BusinessRules.run(checkIfCarIsAvailable(), 
+				checkFindexPointsForIndividual(individualCustomerDao.getById(entity.getUserId()), carDao.getByCarId(entity.getCarId())),
+				checkCarsPickUpCity(entity.getCarId(), entity.getPickUpCity()));
 						
 		
 		if(result != null)
@@ -133,6 +133,7 @@ public class RentalManager implements RentalService {
 		
 		Car car = this.carDao.getByCarId(entity.getCarId());
 		car.setAvailable(false);
+		car.setCity(entity.getReturnCity());
 		
 		ApplicationUser user = this.applicationUserDao.getById(entity.getUserId());
 		
@@ -154,7 +155,7 @@ public class RentalManager implements RentalService {
 		creditCardService.add(creditCard);
 		
 		if(!checkCardInfo(creditCard).isSuccess())
-			return new ErrorResult(Messages.CARD_INFO_IS_NULL);
+			return new ErrorResult(Messages.CREDIT_CARD_INFO_IS_NULL);
 		
 		Receipt receipt = receiptService.createReceipt(creditCard, entity).getData();
 		
@@ -173,6 +174,8 @@ public class RentalManager implements RentalService {
 		
 		Car car = rental.getCar();
 		car.setAvailable(entity.isReturned());
+		car.setCity(entity.getReturnCity());
+		car.setCurrentKilometer(entity.getReturnKilometer());
 	
 		this.carDao.save(car);
 		this.rentalDao.save(rental);
@@ -274,12 +277,12 @@ public class RentalManager implements RentalService {
 		return new SuccessResult();
 	}
 	
-	
-	private Result checkIfCarIsNotInCarMaintenance() {
-		if(!this.carMaintenanceDao.existsByIsInCarMaintenanceIsTrue()) {
-			return new SuccessResult();
-		}
-		return new ErrorResult(Messages.CAR_IS_IN_CAR_MAINTENANCE);
+	private Result checkCarsPickUpCity(int carId, String pickUpCity) {
+		Car car = this.carDao.getByCarId(carId);
+		if(!car.getCity().equals(pickUpCity))
+			return new ErrorResult(Messages.CAR_IS_NOT_IN_THE_CITY);
+		
+		return new SuccessResult();
 	}
 	
 }

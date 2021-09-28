@@ -50,6 +50,8 @@ public class CarManager implements CarService {
 		car.setDailyPrice(entity.getDailyPrice());
 		car.setDescription(entity.getDescription());
 		car.setMinFindexPoint(entity.getMinFindexPoint());
+		car.setCity(entity.getCity());
+		car.setCurrentKilometer(entity.getKilometer());
 		
 		// Default image
 		if(this.carImageDao.getByCar_CarId(car.getCarId()).isEmpty()) {
@@ -70,6 +72,8 @@ public class CarManager implements CarService {
 		car.setDailyPrice(entity.getDailyPrice());
 		car.setDescription(entity.getDescription());
 		car.setAvailable(entity.isAvailable());
+		car.setCity(entity.getCity());
+		car.setCurrentKilometer(entity.getKilometer());
 		
 		this.carDao.save(car);
 		return new SuccessResult(Messages.CAR_UPDATED);
@@ -105,11 +109,10 @@ public class CarManager implements CarService {
 	public DataResult<List<Car>> getCarByColorName(String colorName) {
 		return new SuccessDataResult<List<Car>>(this.carDao.getByColor_ColorName(colorName));
 	}
-
-	@Override
-	public DataResult<List<Car>> getAvailableCars() {
-		return new SuccessDataResult<List<Car>>(this.carDao.getByIsAvailableIsTrue());
-	}
 	
+	@Override
+	public DataResult<List<Car>> getByCityName(String cityName) {
+		return new SuccessDataResult<List<Car>>(this.carDao.getByCity(cityName), Messages.CARS_LISTED);
+	}
 	
 }

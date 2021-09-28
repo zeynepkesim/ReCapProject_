@@ -49,7 +49,7 @@ public class RentalsConroller {
 	}
 	
 	@DeleteMapping("/delete")
-	public Result delete(DeleteRentalRequest rentalId) {
+	public Result delete(@Valid DeleteRentalRequest rentalId) {
 		return this.rentalService.delete(rentalId);
 	}
 	

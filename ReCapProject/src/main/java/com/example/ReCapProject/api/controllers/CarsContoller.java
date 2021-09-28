@@ -68,9 +68,9 @@ public class CarsContoller {
 		return this.carService.getCarByBrandName(brandName);
 	}
 	
-	@GetMapping("/getavailablecars")
-	public DataResult<List<Car>> getAvailableCars() {
-		return this.carService.getAvailableCars();
+	@GetMapping("getcarsbycity")
+	public DataResult<List<Car>> getByCity(String cityName) {
+		return this.carService.getByCityName(cityName);
 	}
 	
 }

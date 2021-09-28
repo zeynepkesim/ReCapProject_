@@ -1,6 +1,4 @@
-package com.example.ReCapProject.entities.requests;
-
-import java.util.Date;
+package com.example.ReCapProject.entities.requests.damage;
 
 import com.example.ReCapProject.core.entities.abstracts.Request;
 
@@ -13,11 +11,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRentalRequest implements Request{
+public class DeleteDamageRequest implements Request {
 	
-	private int carId;
-	private int userId;
-	private Date rentDate;
-	private Date returnDate;
-	
+	private int damageId;
+
 }

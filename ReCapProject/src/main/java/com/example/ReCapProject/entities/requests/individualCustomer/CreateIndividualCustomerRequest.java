@@ -4,8 +4,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
 import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 
@@ -30,8 +28,7 @@ public class CreateIndividualCustomerRequest implements Request {
 	
 	@NotNull
 	@NotBlank
-	@Email
-	@UniqueElements(message = "This e-Mail already exists!")
+	@Email(message = "E-Mail is invalid!")
 	private String email;
 	
 	@NotNull

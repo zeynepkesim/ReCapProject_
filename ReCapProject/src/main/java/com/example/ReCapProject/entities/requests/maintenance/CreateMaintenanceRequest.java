@@ -1,4 +1,4 @@
-package com.example.ReCapProject.entities.requests;
+package com.example.ReCapProject.entities.requests.maintenance;
 
 import java.util.Date;
 
@@ -11,11 +11,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRentalRequest {
-	
-	private int rentalId;
-	private Date rentDate;
-	private Date returnDate;
-	private boolean isReturned;
+public class CreateMaintenanceRequest {
 
+	private int carId;
+	private Date maintenanceDate;
+	
 }

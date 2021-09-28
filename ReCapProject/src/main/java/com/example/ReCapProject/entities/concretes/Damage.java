@@ -3,14 +3,13 @@ package com.example.ReCapProject.entities.concretes;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,19 +19,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "car_maintenances")
-public class CarMaintenance {
+@Table(name = "damages")
+public class Damage {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "car_maintenance_id")
-	private int carMaintenanceId;
+	@Column(name = "damage_id")
+	private int damageId;
 	
-	@Nullable
-	@Column(name = "is_in_car_maintenance", columnDefinition = "boolean default false")
-	private boolean isInCarMaintenance = false;
+	@Column(name = "damage_info")
+	private String damageInfo;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "car_id")
 	private Car car;
 

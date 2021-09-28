@@ -16,6 +16,7 @@ public class RentalInfoRequest {
 	private String brandName;
 	private String modelName;
 	private int modelYear;
+	private long receivedByCustomerKm;
 	private Date rentDate;
 	
 }

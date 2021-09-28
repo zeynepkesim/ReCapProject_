@@ -1,4 +1,4 @@
-package com.example.ReCapProject.entities.requests;
+package com.example.ReCapProject.entities.requests.damage;
 
 import com.example.ReCapProject.core.entities.abstracts.Request;
 
@@ -11,11 +11,12 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCorporateCustomerRequest implements Request{
-
-	private int corporateCustomerId;
-	private String companyName;
-	private String email;
-	private String password;
+public class UpdateDamageRequest implements Request {
 	
+	private int damageId;
+	
+	private int carId;
+	
+	private String damageInfo;
+
 }

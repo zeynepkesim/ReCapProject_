@@ -18,6 +18,7 @@ public class Messages {
 	public static String CUSTOMER_UPDATED = "Customer has been updaed!";
 	public static String CUSTOMER_DELETED = "Customer has been deleted!";
 	public static String CUSTOMERS_LISTED = "Customer has been listed!";
+	public static String CUSTOMER_FINDEX_POINT_IS_NOT_ENOUGH = "Customer's fidex point is not enough to rent this car!";
 	public static String TAX_NUMBER_IS_NOT_VALID = "Tax Number is not valid!";
 	public static String NATIONAL_ID_NUMBER_IS_NOT_VALID = "National ID is not valid!";
 	
@@ -28,10 +29,6 @@ public class Messages {
 	public static String RENTAL_DELETED = "Rental has been deleted!";
 	public static String RENTALS_LISTED = "Rentals has been listed";
 	public static String RENTAL_DETAILS_LISTED = "Rentals details have been listed!";
-	public static String CAR_IS_NOT_RETURNED = "Car is not available!";
-	public static String CAR_IS_IN_RENTAL = "Car is in rental!";
-	public static String CUSTOMER_FINDEX_POINT_IS_NOT_ENOUGH = "Customer's fidex point is not enough to rent this car!";
-	public static String CARD_INFO_IS_NULL = "You can not leave card's fields empty!";
 	
 	
 	//Car Images
@@ -43,6 +40,8 @@ public class Messages {
 	public static String CAR_IMAGE_LIMIT_EXCEEDED = "You can maximum upload five images!";
 	public static String CAR_IMAGE_FORMAT_ERROR = "You can only upload photos in JPEG format!";
 	public static String CAR_IMAGE_UNUPLOADED = "You didn't upload any photo!";
+	public static String CAR_IS_NOT_RETURNED = "Car is not available!";
+	public static String CAR_IS_NOT_IN_THE_CITY = "You can't pick up this car from indicated city!";
 	
 	
 	//Colours
@@ -64,16 +63,22 @@ public class Messages {
 	public static String CREDIT_CARD_UPDATED = "Credit Card has been updated!";
 	public static String CREDIT_CARD_DELETED = "Credit Card has been deleted!";
 	public static String CREDIT_CARD_IS_INVALID = "Credit Card info is invalid!";
+	public static String CREDIT_CARD_INFO_IS_NULL = "You can not leave card's fields empty!";
 	
 	//Receipts
 	public static String RECEIPT_CREATED = "Receipt has been created!";
+	public static String RECEIPTS_LISTED = "Receipts has been listed!";
+	
+	//Maintenances
+	public static String MAINTENANCE_ADDED = "Car has been sent to maintenance!";
+	public static String MAINTENANCE_UPDATED = "Car maintenance status has been updated!";
+	public static String MAINTENANCE_DELETED = "Car maintenance has been deleted!";
+	public static String MAINTENANCES_LISTED = "Car Maintenances has been listed!";
 	
 	
-	//Car Maintenances
-	public static String CAR_MAINTENANCE_ADDED = "Car maintenance has been added!";
-	public static String CAR_MAINTENANCE_UPDATED = "Car maintenance has been updated!";
-	public static String CAR_MAINTENANCE_DELETED = "Car maintenance has been deleted!";
-	public static String CAR_MAINTENANCES_LISTED = "Car maintenances have been listed!";
-	public static String CAR_IS_IN_CAR_MAINTENANCE = "Car is in car maintenance!";
-	
+	//Damages
+	public static String DAMAGE_ADDED = "Car damage information has been added!";
+	public static String DAMAGE_UPDATED = "Car damage information has been updated!";
+	public static String DAMAGE_DELETED = "Car damage information has been deleted!";
+	public static String DAMAGES_LISTED = "Car damages information have been listed!";
 }

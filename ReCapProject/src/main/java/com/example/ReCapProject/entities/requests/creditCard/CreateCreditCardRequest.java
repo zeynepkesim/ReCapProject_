@@ -2,6 +2,8 @@ package com.example.ReCapProject.entities.requests.creditCard;
 
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.CreditCardNumber;
+
 import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
@@ -30,6 +32,7 @@ public class CreateCreditCardRequest implements Request{
 	
 	@NotNull
 	@NotBlank
+	@CreditCardNumber(ignoreNonDigitCharacters = true)
 	private String cardNumber;
 	
 	@NotNull
@@ -41,6 +44,6 @@ public class CreateCreditCardRequest implements Request{
 	private String expireDate;
 	
 	@Nullable
-	private boolean saveCard;
+	private boolean saveCard = false;
 	
 }

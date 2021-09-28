@@ -42,6 +42,9 @@ public class Receipt {
 	@Column(name = "model_year")
 	private int modelYear;
 	
+	@Column(name = "receive_kilometer")
+	private long receivedByCustomerKm;
+	
 	@Column(name = "receipt_date")
 	private Date receiptDate;
 	

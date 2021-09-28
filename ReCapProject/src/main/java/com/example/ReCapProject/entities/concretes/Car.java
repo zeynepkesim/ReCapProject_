@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "carMaintenances"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "carMaintenances", "damages"})
 @Table(name = "cars")
 public class Car {
 
@@ -41,6 +41,12 @@ public class Car {
 	
 	@Column(name = "min_findex_point")
 	private double minFindexPoint;
+	
+	@Column(name = "city")
+	private String city;
+	
+	@Column(name = "total_kilometer")
+	private long currentKilometer;
 	
 	@NotNull
 	@NotBlank
@@ -65,7 +71,10 @@ public class Car {
 	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
 	private List<CarImage> carImages;
 	
-	@OneToMany(mappedBy = "car")
-	private List<CarMaintenance> carMaintenances;
+	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+	private List<Maintenance> carMaintenances;
+	
+	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+	private List<Damage> damages;
 	
 }

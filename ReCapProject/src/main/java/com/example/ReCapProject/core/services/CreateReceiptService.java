@@ -14,7 +14,7 @@ public class CreateReceiptService {
 		
 		Receipt receipt = new Receipt();
 		receipt.setCardBeholderName(creditCard.getCardBeholderName());
-		receipt.setCreditCardNumber("************" + creditCard.getCardNumber().substring(11));
+		receipt.setCreditCardNumber("*************" + creditCard.getCardNumber().substring(12));
 		receipt.setBrandName(rental.getBrandName());
 		receipt.setModelName(rental.getModelName());
 		receipt.setModelYear(rental.getModelYear());

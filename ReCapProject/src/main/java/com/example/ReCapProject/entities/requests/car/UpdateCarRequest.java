@@ -27,6 +27,13 @@ public class UpdateCarRequest implements Request  {
 	private String description;
 	
 	@NotNull
+	@NotBlank
+	private String city;
+	
+	@NotNull
+	private long kilometer;
+	
+	@NotNull
 	private boolean isAvailable;
 	
 }

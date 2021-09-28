@@ -29,6 +29,13 @@ public class CreateCarRequest implements Request {
 	private String description;
 	
 	@NotNull
+	@NotBlank
+	private String city;
+	
+	@NotNull
+	private long kilometer;
+	
+	@NotNull
 	private double dailyPrice;
 	
 	@Max(1600)

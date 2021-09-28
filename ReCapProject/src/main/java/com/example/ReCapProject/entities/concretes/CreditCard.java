@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.CreditCardNumber;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +39,7 @@ public class CreditCard {
 	private String cardName;
 	
 	@Column(name = "credit_card_number")
+	@CreditCardNumber(ignoreNonDigitCharacters = true)
 	private String creditCardNumber;
 	
 	@Column(name = "cvv_code")

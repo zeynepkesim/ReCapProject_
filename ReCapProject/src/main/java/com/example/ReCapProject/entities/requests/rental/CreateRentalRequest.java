@@ -4,9 +4,6 @@ import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 
-import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
@@ -32,21 +29,25 @@ public class CreateRentalRequest implements Request{
 	@NotBlank
 	private String cardName;
 	
-	@NotBlank
-	@NotNull
+	@Nullable
 	private String cardBeholderName;
 	
 	@Nullable
-	@Length(min = 16, max = 16)
 	private String cardNumber;
 	
 	@Nullable
-	@Length(min = 3, max = 3)
 	private String cvvCode;
 	
 	@Nullable
-	@DateTimeFormat(pattern = "MM/yyyy")
 	private String expireDate;
+	
+	@NotNull
+	@NotBlank
+	private String pickUpCity;
+	
+	@NotNull
+	@NotBlank
+	private String returnCity;
 	
 	@Nullable
 	private boolean saveCard;
