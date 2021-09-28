@@ -19,13 +19,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "damages")
-public class Damage {
+@Table(name = "damage_records")
+public class DamageRecord {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "damage_id")
-	private int damageId;
+	@Column(name = "damage_record_id")
+	private int damageRecordId;
 	
 	@Column(name = "damage_info")
 	private String damageInfo;

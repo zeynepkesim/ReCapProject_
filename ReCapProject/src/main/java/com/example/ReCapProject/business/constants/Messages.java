@@ -76,9 +76,10 @@ public class Messages {
 	public static String MAINTENANCES_LISTED = "Car Maintenances has been listed!";
 	
 	
-	//Damages
-	public static String DAMAGE_ADDED = "Car damage information has been added!";
-	public static String DAMAGE_UPDATED = "Car damage information has been updated!";
-	public static String DAMAGE_DELETED = "Car damage information has been deleted!";
-	public static String DAMAGES_LISTED = "Car damages information have been listed!";
+	//Damage Records
+	public static String DAMAGE_RECORD_ADDED = "Car damage record information has been added!";
+	public static String DAMAGE_RECORD_UPDATED = "Car damage record information has been updated!";
+	public static String DAMAGE_RECORD_DELETED = "Car damage record information has been deleted!";
+	public static String DAMAGE_RECORDS_LISTED = "Car damage records information have been listed!";
+	
 }

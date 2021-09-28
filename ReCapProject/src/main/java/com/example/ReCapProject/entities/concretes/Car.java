@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "carMaintenances", "damages"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "carMaintenances", "damageRecords"})
 @Table(name = "cars")
 public class Car {
 
@@ -75,6 +75,6 @@ public class Car {
 	private List<Maintenance> carMaintenances;
 	
 	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-	private List<Damage> damages;
+	private List<DamageRecord> damageRecords;
 	
 }

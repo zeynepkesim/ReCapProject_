@@ -11,9 +11,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateDamageRequest implements Request {
+public class UpdateDamageRecordRequest implements Request {
 	
-	private int damageId;
+	private int damageRecordId;
 	
 	private int carId;
 	
