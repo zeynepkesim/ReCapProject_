@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.AdditionalService;
+import com.example.ReCapProject.entities.dtos.AdditionalServiceDto;
 import com.example.ReCapProject.entities.requests.additionalService.CreateAdditionalServiceRequest;
 import com.example.ReCapProject.entities.requests.additionalService.DeleteAdditionalServiceRequest;
 import com.example.ReCapProject.entities.requests.additionalService.UpdateAdditionalServiceRequest;
@@ -17,5 +18,7 @@ public interface AdditionalServiceService {
 	
 	DataResult<List<AdditionalService>> getAll();
 	DataResult<List<AdditionalService>> getAdditionalServicesByRentalId(int rentalId);
+	
+	DataResult<List<AdditionalServiceDto>> getAdditionalServiceDetails();
 
 }

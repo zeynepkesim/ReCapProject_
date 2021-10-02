@@ -106,6 +106,7 @@ public class Messages {
 	public static String ADDITIONAL_SERVICE_UPDATED = "Additional Service has been updated!";
 	public static String ADDITIONAL_SERVICE_DELETED = "Additional Service has been deleted!";
 	public static String ADDITIONAL_SERVICES_LISTED = "Additional Services have been listed!";
+	public static String ADDITIONAL_SERVICE_DETAILS_LISTED = "Additional Service Details have been listed!";
 	public static String ADDITIONAL_SERVICE_ALREADY_EXISTS = "This additional service already exists!";
 	
 }

@@ -15,6 +15,7 @@ import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
 import com.example.ReCapProject.dataAccess.abstracts.AdditionalServiceDao;
 import com.example.ReCapProject.entities.concretes.AdditionalService;
+import com.example.ReCapProject.entities.dtos.AdditionalServiceDto;
 import com.example.ReCapProject.entities.requests.additionalService.CreateAdditionalServiceRequest;
 import com.example.ReCapProject.entities.requests.additionalService.DeleteAdditionalServiceRequest;
 import com.example.ReCapProject.entities.requests.additionalService.UpdateAdditionalServiceRequest;
@@ -86,6 +87,13 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		}
 		
 		return new SuccessResult();
+	}
+
+	@Override
+	public DataResult<List<AdditionalServiceDto>> getAdditionalServiceDetails() {
+
+		return new SuccessDataResult<List<AdditionalServiceDto>>(this.additionalServiceDao.getAdditionalServiceDetails(), Messages.ADDITIONAL_SERVICE_DETAILS_LISTED);
+		
 	}
 
 }
