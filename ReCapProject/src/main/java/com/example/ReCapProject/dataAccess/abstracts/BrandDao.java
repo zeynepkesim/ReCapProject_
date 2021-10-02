@@ -10,8 +10,6 @@ import com.example.ReCapProject.entities.concretes.Brand;
 @Repository
 public interface BrandDao extends JpaRepository<Brand, Integer> {
 	
-	Brand getByBrandId(int bradnId);
-	
 	List<Brand> getByBrandName(String brandName);
 	
 }

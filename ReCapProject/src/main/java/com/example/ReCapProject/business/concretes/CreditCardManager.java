@@ -1,5 +1,6 @@
 package com.example.ReCapProject.business.concretes;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,13 +10,17 @@ import org.springframework.stereotype.Service;
 import com.example.ReCapProject.business.abstracts.CreditCardService;
 import com.example.ReCapProject.business.constants.Messages;
 import com.example.ReCapProject.core.utilities.business.BusinessRules;
+import com.example.ReCapProject.core.utilities.results.DataResult;
+import com.example.ReCapProject.core.utilities.results.ErrorDataResult;
 import com.example.ReCapProject.core.utilities.results.ErrorResult;
 import com.example.ReCapProject.core.utilities.results.Result;
+import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
 import com.example.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
 import com.example.ReCapProject.dataAccess.abstracts.CreditCardDao;
-import com.example.ReCapProject.entities.concretes.ApplicationUser;
+import com.example.ReCapProject.entities.abstracts.ApplicationUser;
 import com.example.ReCapProject.entities.concretes.CreditCard;
+import com.example.ReCapProject.entities.dtos.CreditCardDto;
 import com.example.ReCapProject.entities.requests.creditCard.CreateCreditCardRequest;
 import com.example.ReCapProject.entities.requests.creditCard.DeleteCreditCardRequest;
 import com.example.ReCapProject.entities.requests.creditCard.UpdateCreditCardRequest;
@@ -26,11 +31,14 @@ public class CreditCardManager implements CreditCardService {
 	private CreditCardDao creditCardDao;
 	private ApplicationUserDao applicationUserDao;
 	
+	
 	@Autowired
 	public CreditCardManager(CreditCardDao creditCardDao, ApplicationUserDao applicationUserDao) {
+		
 		this.creditCardDao = creditCardDao;
 		this.applicationUserDao = applicationUserDao;
 	}
+	
 
 	@Override
 	public Result add(CreateCreditCardRequest entity) {
@@ -57,6 +65,7 @@ public class CreditCardManager implements CreditCardService {
 		
 		return new SuccessResult(Messages.CREDIT_CARD_ADDED);
 	}
+	
 
 	@Override
 	public Result update(UpdateCreditCardRequest entity) {
@@ -77,12 +86,42 @@ public class CreditCardManager implements CreditCardService {
 		return new SuccessResult(Messages.CREDIT_CARD_UPDATED);
 		
 	}
+	
 
 	@Override
 	public Result delete(DeleteCreditCardRequest entity) {
+		
 		this.creditCardDao.deleteById(entity.getCardId());
 		return new SuccessResult(Messages.CREDIT_CARD_DELETED);
 	}
+	
+
+	@Override
+	public DataResult<List<CreditCard>> getCreditCardsForUser(int userId) {
+		
+		if(!this.applicationUserDao.getById(userId).getCreditCards().isEmpty())
+			return new SuccessDataResult<List<CreditCard>>(this.applicationUserDao.getById(userId).getCreditCards(), Messages.CREDIT_CARD_LISTED);
+		
+		return new ErrorDataResult<List<CreditCard>>();
+	}
+		
+		
+	@Override
+	public DataResult<List<CreditCardDto>> getCreditCardDetails(int userId) {
+		
+		return new SuccessDataResult<List<CreditCardDto>>(this.creditCardDao.getCreditCardDetails(userId));
+	}
+	
+	
+	@Override
+	public Result checkCardInfo(CreateCreditCardRequest card) {
+		
+		if(card.getCardName().isBlank() && card.getCardNumber().isBlank() && card.getCvvCode().isBlank() && card.getExpireDate().isBlank())	
+			return new ErrorResult();
+
+		return new SuccessResult();
+	}	
+	
 	
 	// Card Validation rules!
 	private Result checkCreditCardNumber(String creditCardNumber) {
@@ -103,6 +142,7 @@ public class CreditCardManager implements CreditCardService {
 		return new SuccessResult();
 	}
 	
+	
 	private Result checkCreditCardCvv(String cvv) {
 
 		String regex = "^[0-9]{3,3}$";
@@ -115,6 +155,7 @@ public class CreditCardManager implements CreditCardService {
 		
 		return new SuccessResult();
 	}
+	
 	
 	private Result checkCreditCardExpiryDate(String expiryDate) {
 

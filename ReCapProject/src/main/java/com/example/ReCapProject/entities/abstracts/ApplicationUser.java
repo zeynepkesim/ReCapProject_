@@ -1,4 +1,4 @@
-package com.example.ReCapProject.entities.concretes;
+package com.example.ReCapProject.entities.abstracts;
 
 import java.util.List;
 
@@ -8,6 +8,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.example.ReCapProject.core.entities.concretes.User;
+import com.example.ReCapProject.entities.concretes.CreditCard;
+import com.example.ReCapProject.entities.concretes.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;

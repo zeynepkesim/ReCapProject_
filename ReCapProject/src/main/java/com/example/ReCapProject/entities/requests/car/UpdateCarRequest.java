@@ -20,15 +20,14 @@ public class UpdateCarRequest implements Request  {
 	private int carId;
 	
 	@NotNull
+	private int cityId;
+	
+	@NotNull
 	private double dailyPrice;
 	
 	@NotNull
 	@NotBlank
 	private String description;
-	
-	@NotNull
-	@NotBlank
-	private String city;
 	
 	@NotNull
 	private long kilometer;

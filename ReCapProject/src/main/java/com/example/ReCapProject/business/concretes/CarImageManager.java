@@ -58,7 +58,7 @@ public class CarImageManager implements CarImageService {
 		fos.write(entity.getFile().getBytes());	// Literally copying the file (byte by byte) !
 		fos.close();
 		
-		Car car = this.carDao.getByCarId(entity.getCarId());
+		Car car = this.carDao.getById(entity.getCarId());
 		car.setCarId(entity.getCarId());
 		
 		CarImage carImage = new CarImage();
@@ -83,7 +83,7 @@ public class CarImageManager implements CarImageService {
 		fileOutpuStream.write(entity.getFile().getBytes());
 		fileOutpuStream.close();
 		
-		Car car = this.carDao.getByCarId(entity.getCarId());
+		Car car = this.carDao.getById(entity.getCarId());
 		car.setCarId(entity.getCarId());
 		
 		CarImage carImage = new CarImage();

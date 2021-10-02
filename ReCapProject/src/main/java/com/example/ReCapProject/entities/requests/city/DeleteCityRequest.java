@@ -1,4 +1,6 @@
-package com.example.ReCapProject.entities.requests.creditCard;
+package com.example.ReCapProject.entities.requests.city;
+
+import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +11,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditCardInfoRequest {
+public class DeleteCityRequest {
 
-	private String cardBeholderName;
-	private String cardNumber;
+	@NotNull
+	private int cityId;
 	
 }

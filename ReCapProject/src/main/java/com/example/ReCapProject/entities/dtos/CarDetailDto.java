@@ -17,5 +17,4 @@ public class CarDetailDto implements Dto {
 	private int modelYear;
 	private String colorName;
 	private boolean isAvailable;
-	
 }

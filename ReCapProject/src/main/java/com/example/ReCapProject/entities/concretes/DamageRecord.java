@@ -21,17 +21,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "damage_records")
 public class DamageRecord {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "damage_record_id")
-	private int damageRecordId;
+	@Column(name = "record_id")
+	private int recordId;
 	
-	@Column(name = "damage_info")
-	private String damageInfo;
+	@Column(name = "record_info")
+	private String recordInfo;
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "car_id")
 	private Car car;
-
+	
 }

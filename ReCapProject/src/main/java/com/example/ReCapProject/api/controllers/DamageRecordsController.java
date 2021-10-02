@@ -2,9 +2,10 @@ package com.example.ReCapProject.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,15 +15,14 @@ import com.example.ReCapProject.business.abstracts.DamageRecordService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.DamageRecord;
-import com.example.ReCapProject.entities.requests.damage.CreateDamageRecordRequest;
-import com.example.ReCapProject.entities.requests.damage.DeleteDamageRecordRequest;
-import com.example.ReCapProject.entities.requests.damage.UpdateDamageRecordRequest;
+import com.example.ReCapProject.entities.requests.damageRecord.CreateDamageRecordRequest;
+import com.example.ReCapProject.entities.requests.damageRecord.UpdateDamageRecordRequest;
 
 @RestController
-@RequestMapping("/api/damages")
+@RequestMapping("/api/damagerecords")
 @CrossOrigin
 public class DamageRecordsController {
-	
+
 	private DamageRecordService damageRecordService;
 
 	@Autowired
@@ -30,29 +30,19 @@ public class DamageRecordsController {
 		this.damageRecordService = damageRecordService;
 	}
 	
-	@PostMapping("/adddamage")
-	public Result add(CreateDamageRecordRequest damage) {
-		return this.damageRecordService.add(damage);
-	}
-
-	@PostMapping("/updatedamage")
-	public Result update(UpdateDamageRecordRequest damage) {
-		return this.damageRecordService.update(damage);
+	@PostMapping("/adddamagerecord")
+	public Result add(@Valid CreateDamageRecordRequest damageRecord) {
+		return this.damageRecordService.add(damageRecord);
 	}
 	
-	@DeleteMapping("/deletedamage")
-	public Result delete(DeleteDamageRecordRequest damageId) {
-		return this.damageRecordService.delete(damageId);
+	@PostMapping("/updatedamagerecord")
+	public Result update(@Valid UpdateDamageRecordRequest damageRecord) {
+		return this.damageRecordService.update(damageRecord);
 	}
 	
-	@GetMapping("/getalldamages")
-	public DataResult<List<DamageRecord>> getAll() {
-		return this.damageRecordService.getAll();
-	}
-	
-	@GetMapping("/getdamagerecords")
+	@GetMapping("getdamagerecordsbycarid")
 	public DataResult<List<DamageRecord>> getDamageRecordsByCarId(int carId) {
 		return this.damageRecordService.getDamageRecordsByCarId(carId);
 	}
-
+	
 }

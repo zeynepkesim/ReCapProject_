@@ -1,9 +1,5 @@
 package com.example.ReCapProject.entities.requests.rental;
 
-import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
-
 import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
@@ -26,7 +22,15 @@ public class CreateRentalRequest implements Request{
 	private int userId;
 	
 	@NotNull
-	@NotBlank
+	private int pickUpCityId;
+	
+	@NotNull
+	private int returnCityId;
+	
+	@Nullable
+	private int additionalServiceId;
+	
+	@Nullable
 	private String cardName;
 	
 	@Nullable
@@ -41,21 +45,13 @@ public class CreateRentalRequest implements Request{
 	@Nullable
 	private String expireDate;
 	
-	@NotNull
-	@NotBlank
-	private String pickUpCity;
-	
-	@NotNull
-	@NotBlank
-	private String returnCity;
-	
 	@Nullable
 	private boolean saveCard;
 	
 	@NotNull
-	private Date rentDate;
+	private String rentDate;
 	
 	@NotNull
-	private Date returnDate;
+	private String returnDate;
 	
 }

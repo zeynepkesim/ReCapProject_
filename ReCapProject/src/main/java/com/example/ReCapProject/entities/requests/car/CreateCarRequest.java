@@ -25,12 +25,11 @@ public class CreateCarRequest implements Request {
 	private int colorId;;
 	
 	@NotNull
-	@NotBlank
-	private String description;
+	private int cityId;
 	
 	@NotNull
 	@NotBlank
-	private String city;
+	private String description;
 	
 	@NotNull
 	private long kilometer;

@@ -1,4 +1,4 @@
-package com.example.ReCapProject.entities.requests.damage;
+package com.example.ReCapProject.entities.requests.additionalService;
 
 import com.example.ReCapProject.core.entities.abstracts.Request;
 
@@ -11,8 +11,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteDamageRecordRequest implements Request {
+public class CreateAdditionalServiceRequest implements Request {
 	
-	private int damageRecordId;
+	private String additionalServiceName;	
+	private double additionalServiceFee;
 
 }

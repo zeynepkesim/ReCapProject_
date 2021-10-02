@@ -1,4 +1,4 @@
-package com.example.ReCapProject.entities.requests.damage;
+package com.example.ReCapProject.entities.requests.invoice;
 
 import com.example.ReCapProject.core.entities.abstracts.Request;
 
@@ -11,12 +11,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateDamageRecordRequest implements Request {
-	
-	private int damageRecordId;
-	
-	private int carId;
-	
-	private String damageInfo;
+public class CreateInvoiceRequest implements Request {
 
+	private int rentalId;
+	
 }

@@ -42,30 +42,31 @@ public class Car {
 	@Column(name = "min_findex_point")
 	private double minFindexPoint;
 	
-	@Column(name = "city")
-	private String city;
-	
 	@Column(name = "total_kilometer")
 	private long currentKilometer;
+		
+	@Nullable
+	@Column(name = "is_available", columnDefinition = "boolean default true")
+	private boolean isAvailable = true;
 	
 	@NotNull
 	@NotBlank
 	@Column(name = "description")
 	private String description;
 	
-	@Nullable
-	@Column(name = "is_available", columnDefinition = "boolean default true")
-	private boolean isAvailable = true;
-	
-	@ManyToOne(cascade = CascadeType.DETACH)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
 	
-	@ManyToOne(cascade = CascadeType.DETACH)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "color_id")
 	private Color color;
 	
-	@OneToMany(mappedBy = "car")
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "city_id")
+	private City city;
+	
+	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
 	private List<Rental> rentals;
 	
 	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)

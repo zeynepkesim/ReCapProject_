@@ -1,6 +1,6 @@
 package com.example.ReCapProject.entities.dtos;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.example.ReCapProject.core.entities.abstracts.Dto;
 
@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class RentalDto implements Dto {
 	
 	private int rentalId;
-	private Date rentDate;
-	private Date returnDate;
+	private LocalDate rentDate;
+	private LocalDate returnDate;
 	private boolean isReturned;
 	private String brandName;
 	private String modelName;

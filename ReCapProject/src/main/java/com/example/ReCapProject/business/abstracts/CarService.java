@@ -28,4 +28,5 @@ public interface CarService  {
 	
 	DataResult<List<CarDetailDto>> getCarsDetail();
 	
+	
 }

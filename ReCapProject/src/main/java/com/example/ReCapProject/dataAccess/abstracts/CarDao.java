@@ -12,8 +12,6 @@ import com.example.ReCapProject.entities.dtos.CarDetailDto;
 @Repository
 public interface CarDao extends JpaRepository<Car, Integer>{
 	
-	Car getByCarId(int carId);
-	
 	boolean existsByIsAvailableIsTrue();
 	boolean existsByCarImagesIsNull();
 	
@@ -23,8 +21,8 @@ public interface CarDao extends JpaRepository<Car, Integer>{
 			+ " Inner Join c.color co")
 	List<CarDetailDto> getCarDetails();
 	
-	
 	List<Car> getByBrand_BrandName(String brandName);
 	List<Car> getByColor_ColorName(String colorName);
 	List<Car> getByCity(String cityName);
+	
 }

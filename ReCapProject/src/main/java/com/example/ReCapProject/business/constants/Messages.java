@@ -10,7 +10,8 @@ public class Messages {
 	public static String CARS_LISTED = "Cars have been listed!";
 	public static String CAR_LISTED = "Car has been listed!";
 	public static String CAR_DETAILS_LISTED = "Cars details have been listed!";
-	public static String CAR_ALREADY_EXISTS = "This car already exists!";
+	public static String CAR_IS_NOT_AVAILABLE = "Car is not available!";
+	public static String CAR_IS_NOT_RETURNED = "Car is not returned, can't create invoice!";
 	
 	
 	//Customers
@@ -40,7 +41,6 @@ public class Messages {
 	public static String CAR_IMAGE_LIMIT_EXCEEDED = "You can maximum upload five images!";
 	public static String CAR_IMAGE_FORMAT_ERROR = "You can only upload photos in JPEG format!";
 	public static String CAR_IMAGE_UNUPLOADED = "You didn't upload any photo!";
-	public static String CAR_IS_NOT_RETURNED = "Car is not available!";
 	public static String CAR_IS_NOT_IN_THE_CITY = "You can't pick up this car from indicated city!";
 	
 	
@@ -56,18 +56,24 @@ public class Messages {
 	public static String BRAND_UPDATED = "Brand has been updated!";
 	public static String BRAND_DELETED = "Brand has been deleted!";
 	public static String BRANDS_LISTED = "Brands has been listed!";
+	public static String BRAND_ALREADY_EXISTS = "This brand already exists!";
 	
 	
 	//Credit Cards
 	public static String CREDIT_CARD_ADDED = "Credit Card has been added!";
 	public static String CREDIT_CARD_UPDATED = "Credit Card has been updated!";
 	public static String CREDIT_CARD_DELETED = "Credit Card has been deleted!";
+	public static String CREDIT_CARD_LISTED = "Credit Card has been listed!";
 	public static String CREDIT_CARD_IS_INVALID = "Credit Card info is invalid!";
 	public static String CREDIT_CARD_INFO_IS_NULL = "You can not leave card's fields empty!";
 	
-	//Receipts
-	public static String RECEIPT_CREATED = "Receipt has been created!";
-	public static String RECEIPTS_LISTED = "Receipts has been listed!";
+	
+	//Invoices
+	public static String INVOICE_CREATED = "Invoice has been created!";
+	public static String INVOICE_DELETED = "Invoice has been deleted!";
+	public static String INVOICE_LISTED = "Invoice has been listed!";
+	public static String INVOICES_LISTED = "Invoices has been listed!";
+	
 	
 	//Maintenances
 	public static String MAINTENANCE_ADDED = "Car has been sent to maintenance!";
@@ -77,9 +83,29 @@ public class Messages {
 	
 	
 	//Damage Records
-	public static String DAMAGE_RECORD_ADDED = "Car damage record information has been added!";
-	public static String DAMAGE_RECORD_UPDATED = "Car damage record information has been updated!";
-	public static String DAMAGE_RECORD_DELETED = "Car damage record information has been deleted!";
-	public static String DAMAGE_RECORDS_LISTED = "Car damage records information have been listed!";
+	public static String DAMAGE_RECORD_ADDED = "Damage Record has been added!";
+	public static String DAMAGE_RECORD_UPDATED = "Damage Record has been updated!";
+	public static String DAMAGE_RECORD_DELETED = "Damage Record has been deleted!";
+	public static String DAMAGE_RECORD_LISTED = "Damage Record has been listed!";
+	
+	
+	//Cities
+	public static String CITY_ADDED = "City has been added!";
+	public static String CITY_UPDATED = "City has been updated!";
+	public static String CITY_DELETED = "City has been deleted!";
+	public static String CITIES_LISTED = "Cities has been listed!";
+	public static String CITY_SERVICE_IS_NOT_AVAILABLE = "We dont have services in the indicated city";
+	
+	
+	//Bank
+	public static String BALANCE_IS_NOT_ENOUGH = "Credit Balance is not enough to make this transaction!";
+	
+	
+	//Additional Services
+	public static String ADDITIONAL_SERVICE_ADDED = "Additional Service has been added!";
+	public static String ADDITIONAL_SERVICE_UPDATED = "Additional Service has been updated!";
+	public static String ADDITIONAL_SERVICE_DELETED = "Additional Service has been deleted!";
+	public static String ADDITIONAL_SERVICES_LISTED = "Additional Services have been listed!";
+	public static String ADDITIONAL_SERVICE_ALREADY_EXISTS = "This additional service already exists!";
 	
 }

@@ -54,7 +54,7 @@ public class BrandManager implements BrandService{
 		if(result != null)
 			return result;
 		
-		Brand brand = this.brandDao.getByBrandId(entity.getBrandId());
+		Brand brand = this.brandDao.getById(entity.getBrandId());
 		brand.setBrandName(entity.getBrandName());
 		brand.setModelName(entity.getModelName());
 		brand.setModelYear(entity.getModelYear());
@@ -78,7 +78,7 @@ public class BrandManager implements BrandService{
 	private Result checkIfBrandExists(String brandName, String modelName, int modelYear) {
 		for (Brand brand : this.brandDao.getByBrandName(brandName)) {
 			if(brand.getModelName().equals(modelName) && brand.getModelYear() == modelYear) 
-				return new ErrorResult(Messages.CAR_ALREADY_EXISTS);
+				return new ErrorResult(Messages.BRAND_ALREADY_EXISTS);
 		}
 		return new SuccessResult();
 	}

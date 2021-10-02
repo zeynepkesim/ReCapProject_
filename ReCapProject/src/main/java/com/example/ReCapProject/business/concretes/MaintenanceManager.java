@@ -41,7 +41,7 @@ public class MaintenanceManager implements MaintenanceService{
 		if(result != null)
 			return result;
 		
-		Car car = this.carDao.getByCarId(entity.getCarId());
+		Car car = this.carDao.getById(entity.getCarId());
 		car.setAvailable(false);
 		
 		Maintenance maintenance = new Maintenance();
@@ -83,7 +83,7 @@ public class MaintenanceManager implements MaintenanceService{
 	}
 	
 	private Result checkIfCarIsAvailable(int carId) {
-		if(this.carDao.getByCarId(carId).isAvailable() == false)
+		if(this.carDao.getById(carId).isAvailable() == false)
 			return new ErrorResult("Car is not available at the moment!");
 		
 		return new SuccessResult();

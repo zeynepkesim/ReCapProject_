@@ -6,8 +6,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import com.example.ReCapProject.entities.concretes.ApplicationUser;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

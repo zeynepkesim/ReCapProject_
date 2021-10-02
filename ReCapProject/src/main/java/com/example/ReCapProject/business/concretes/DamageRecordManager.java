@@ -13,18 +13,17 @@ import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
 import com.example.ReCapProject.dataAccess.abstracts.CarDao;
 import com.example.ReCapProject.dataAccess.abstracts.DamageRecordDao;
-import com.example.ReCapProject.entities.concretes.Car;
 import com.example.ReCapProject.entities.concretes.DamageRecord;
-import com.example.ReCapProject.entities.requests.damage.CreateDamageRecordRequest;
-import com.example.ReCapProject.entities.requests.damage.DeleteDamageRecordRequest;
-import com.example.ReCapProject.entities.requests.damage.UpdateDamageRecordRequest;
+import com.example.ReCapProject.entities.requests.damageRecord.CreateDamageRecordRequest;
+import com.example.ReCapProject.entities.requests.damageRecord.DeleteDamageRecordRequest;
+import com.example.ReCapProject.entities.requests.damageRecord.UpdateDamageRecordRequest;
 
 @Service
-public class DamageRecordManager implements DamageRecordService {
-	
+public class DamageRecordManager implements DamageRecordService{
+
 	private DamageRecordDao damageRecordDao;
 	private CarDao carDao;
-
+	
 	@Autowired
 	public DamageRecordManager(DamageRecordDao damageRecordDao, CarDao carDao) {
 		this.damageRecordDao = damageRecordDao;
@@ -34,14 +33,11 @@ public class DamageRecordManager implements DamageRecordService {
 	@Override
 	public Result add(CreateDamageRecordRequest entity) {
 		
-		Car car = this.carDao.getByCarId(entity.getCarId());
+		DamageRecord damageRecord = new DamageRecord();
+		damageRecord.setCar(this.carDao.getById(entity.getCarId()));
+		damageRecord.setRecordInfo(entity.getRecordInfo());
 		
-		DamageRecord damage = new DamageRecord();
-		damage.setDamageInfo(entity.getDamageInfo());
-		damage.setCar(car);
-		
-		this.damageRecordDao.save(damage);
-		
+		this.damageRecordDao.save(damageRecord);
 		return new SuccessResult(Messages.DAMAGE_RECORD_ADDED);
 		
 	}
@@ -49,38 +45,23 @@ public class DamageRecordManager implements DamageRecordService {
 	@Override
 	public Result update(UpdateDamageRecordRequest entity) {
 		
-		Car car = this.carDao.getByCarId(entity.getCarId());
+		DamageRecord damageRecord = this.damageRecordDao.getById(entity.getRecordId());
+		damageRecord.setRecordInfo(entity.getRecordInfo());
 		
-		DamageRecord damage = this.damageRecordDao.getById(entity.getDamageRecordId());
-		damage.setDamageInfo(entity.getDamageInfo());
-		damage.setCar(car);
-		
-		this.damageRecordDao.save(damage);
-		
+		this.damageRecordDao.save(damageRecord);
 		return new SuccessResult(Messages.DAMAGE_RECORD_UPDATED);
 		
 	}
 
 	@Override
 	public Result delete(DeleteDamageRecordRequest entity) {
-		
-		this.damageRecordDao.deleteById(entity.getDamageRecordId());
+		this.damageRecordDao.deleteById(entity.getRecordId());
 		return new SuccessResult(Messages.DAMAGE_RECORD_DELETED);
-		
-	}
-
-	@Override
-	public DataResult<List<DamageRecord>> getAll() {
-		
-		return new SuccessDataResult<List<DamageRecord>> (this.damageRecordDao.findAll(), Messages.DAMAGE_RECORDS_LISTED);
-		
 	}
 
 	@Override
 	public DataResult<List<DamageRecord>> getDamageRecordsByCarId(int carId) {
-		
-		return new SuccessDataResult<List<DamageRecord>>(this.damageRecordDao.getByCar_CarId(carId), Messages.DAMAGE_RECORDS_LISTED);
-	
+		return new SuccessDataResult<List<DamageRecord>>(this.damageRecordDao.getByCar_CarId(carId), Messages.DAMAGE_RECORD_LISTED);
 	}
 
 }

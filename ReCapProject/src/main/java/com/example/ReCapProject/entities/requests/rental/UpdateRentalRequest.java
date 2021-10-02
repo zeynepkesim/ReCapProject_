@@ -1,9 +1,5 @@
 package com.example.ReCapProject.entities.requests.rental;
 
-import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
-
 import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 
@@ -22,14 +18,13 @@ public class UpdateRentalRequest implements Request  {
 	private int rentalId;
 	
 	@NotNull
-	private Date returnDate;
+	private int returnCityId;
+	
+	@NotNull
+	private String returnDate;
 	
 	@NotNull
 	private long returnKilometer;
-	
-	@NotNull
-	@NotBlank
-	private String returnCity;
 	
 	@NotNull
 	private boolean isReturned;

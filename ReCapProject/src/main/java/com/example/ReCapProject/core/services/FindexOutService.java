@@ -6,7 +6,7 @@ import com.example.ReCapProject.core.utilities.results.ErrorDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 
 // Simulation of a OutService
-public class FindexService {
+public class FindexOutService {
 
 	public DataResult<Double> evaluateFindexPointForCorporate(String taxNumber) {
 		if(taxNumber.length() == 10) {

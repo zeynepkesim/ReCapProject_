@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+import com.example.ReCapProject.entities.abstracts.ApplicationUser;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;

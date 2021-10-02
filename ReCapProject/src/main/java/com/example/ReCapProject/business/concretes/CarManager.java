@@ -12,11 +12,15 @@ import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
+import com.example.ReCapProject.dataAccess.abstracts.BrandDao;
 import com.example.ReCapProject.dataAccess.abstracts.CarDao;
 import com.example.ReCapProject.dataAccess.abstracts.CarImageDao;
+import com.example.ReCapProject.dataAccess.abstracts.CityDao;
+import com.example.ReCapProject.dataAccess.abstracts.ColorDao;
 import com.example.ReCapProject.entities.concretes.Brand;
 import com.example.ReCapProject.entities.concretes.Car;
 import com.example.ReCapProject.entities.concretes.CarImage;
+import com.example.ReCapProject.entities.concretes.City;
 import com.example.ReCapProject.entities.concretes.Color;
 import com.example.ReCapProject.entities.dtos.CarDetailDto;
 import com.example.ReCapProject.entities.requests.car.CreateCarRequest;
@@ -27,30 +31,36 @@ import com.example.ReCapProject.entities.requests.car.UpdateCarRequest;
 public class CarManager implements CarService {
 
 	private CarDao carDao;
+	private CityDao cityDao;
+	private ColorDao colorDao;
+	private BrandDao brandDao;
 	private CarImageDao carImageDao;
 	
 	@Autowired
-	public CarManager(CarDao carDao, CarImageDao carImageDao) {
+	public CarManager(CarDao carDao, CarImageDao carImageDao, CityDao cityDao, BrandDao brandDao, ColorDao colorDao) {
 		this.carDao = carDao;
 		this.carImageDao = carImageDao;
+		this.cityDao = cityDao;
+		this.brandDao = brandDao;
+		this.colorDao = colorDao;
 	}
 
 	@Override
 	public Result add(CreateCarRequest entity) {
 		
-		Color color = new Color();
-		color.setColorId(entity.getColorId());
+		Color color = this.colorDao.getById(entity.getColorId());
 		
-		Brand brand = new Brand();
-		brand.setBrandId(entity.getBrandId());
+		Brand brand = this.brandDao.getById(entity.getBrandId());
+		
+		City city = this.cityDao.getById(entity.getCityId());
 		
 		Car car = new Car();
 		car.setBrand(brand);
 		car.setColor(color);
+		car.setCity(city);
 		car.setDailyPrice(entity.getDailyPrice());
 		car.setDescription(entity.getDescription());
 		car.setMinFindexPoint(entity.getMinFindexPoint());
-		car.setCity(entity.getCity());
 		car.setCurrentKilometer(entity.getKilometer());
 		
 		// Default image
@@ -68,12 +78,14 @@ public class CarManager implements CarService {
 	@Override
 	public Result update(UpdateCarRequest entity) {
 		
-		Car car = this.carDao.getByCarId(entity.getCarId());
+		City city = this.cityDao.getById(entity.getCityId());
+		
+		Car car = this.carDao.getById(entity.getCarId());
 		car.setDailyPrice(entity.getDailyPrice());
 		car.setDescription(entity.getDescription());
 		car.setAvailable(entity.isAvailable());
-		car.setCity(entity.getCity());
 		car.setCurrentKilometer(entity.getKilometer());
+		car.setCity(city);
 		
 		this.carDao.save(car);
 		return new SuccessResult(Messages.CAR_UPDATED);
@@ -87,7 +99,7 @@ public class CarManager implements CarService {
 
 	@Override
 	public DataResult<Car> getByCarId(int carId) {
-		return new SuccessDataResult<Car>(this.carDao.getByCarId(carId), Messages.CAR_LISTED);
+		return new SuccessDataResult<Car>(this.carDao.getById(carId), Messages.CAR_LISTED);
 	}
 
 	@Override
@@ -102,14 +114,14 @@ public class CarManager implements CarService {
 
 	@Override
 	public DataResult<List<Car>> getCarByBrandName(String brandName) {
-		return new SuccessDataResult<List<Car>>(this.carDao.getByBrand_BrandName(brandName));
+		return new SuccessDataResult<List<Car>>(this.carDao.getByBrand_BrandName(brandName), Messages.CARS_LISTED);
 	}
 
 	@Override
 	public DataResult<List<Car>> getCarByColorName(String colorName) {
-		return new SuccessDataResult<List<Car>>(this.carDao.getByColor_ColorName(colorName));
+		return new SuccessDataResult<List<Car>>(this.carDao.getByColor_ColorName(colorName), Messages.CARS_LISTED);
 	}
-	
+
 	@Override
 	public DataResult<List<Car>> getByCityName(String cityName) {
 		return new SuccessDataResult<List<Car>>(this.carDao.getByCity(cityName), Messages.CARS_LISTED);
