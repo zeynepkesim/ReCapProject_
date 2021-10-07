@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCarRequest implements Request  {
+public class UpdateCarRequest implements Request {
 
 	@NotNull
 	private int carId;
@@ -23,16 +23,16 @@ public class UpdateCarRequest implements Request  {
 	private int cityId;
 	
 	@NotNull
-	private double dailyPrice;
+	private boolean isAvailable;
 	
 	@NotNull
 	@NotBlank
 	private String description;
 	
 	@NotNull
-	private long kilometer;
-	
+	private double dailyPrice;
+		
 	@NotNull
-	private boolean isAvailable;
-	
+	private long currentKilometer;
+		
 }

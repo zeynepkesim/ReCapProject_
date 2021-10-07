@@ -20,6 +20,11 @@ public class CreateIndividualCustomerRequest implements Request {
 
 	@NotNull
 	@NotBlank
+	@Size(min = 11, max =11)
+	private String nationalIdNumber;
+	
+	@NotNull
+	@NotBlank
 	private String firstName;
 	
 	@NotNull
@@ -28,16 +33,11 @@ public class CreateIndividualCustomerRequest implements Request {
 	
 	@NotNull
 	@NotBlank
-	@Email(message = "E-Mail is invalid!")
+	@Email(message = "Email is invalid!")
 	private String email;
 	
 	@NotNull
 	@NotBlank
 	private String password;
-	
-	@NotNull
-	@NotBlank
-	@Size(min = 11, max =11)
-	private String nationalId;
 	
 }

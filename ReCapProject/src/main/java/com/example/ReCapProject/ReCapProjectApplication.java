@@ -3,6 +3,8 @@ package com.example.ReCapProject;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -26,15 +28,30 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class ReCapProjectApplication {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(ReCapProjectApplication.class, args);
 	}
 	
+	
 	@Bean
 	public Docket api() {
+		
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select().apis(RequestHandlerSelectors.basePackage("com.example.ReCapProject"))
 				.build();
+		
 	}
+	
+	
+	@Bean
+	public ModelMapper modelMapper() {
+		
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		return modelMapper;
+		
+	}
+	
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -48,6 +65,7 @@ public class ReCapProjectApplication {
 		
 		ErrorDataResult<Object> error = new ErrorDataResult<Object>(validationErrors, "Validation Errors");
 		return error;
+		
 	}
 
 }

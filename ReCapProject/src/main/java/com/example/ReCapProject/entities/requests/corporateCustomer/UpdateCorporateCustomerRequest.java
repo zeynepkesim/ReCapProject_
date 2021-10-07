@@ -22,6 +22,11 @@ public class UpdateCorporateCustomerRequest implements Request {
 	
 	@NotNull
 	@NotBlank
+	@Size(min = 10, max = 10)
+	private String taxNumber;
+	
+	@NotNull
+	@NotBlank
 	private String companyName;
 	
 	@NotNull
@@ -31,10 +36,5 @@ public class UpdateCorporateCustomerRequest implements Request {
 	@NotNull
 	@NotBlank
 	private String password;
-	
-	@NotNull
-	@NotBlank
-	@Size(min = 10, max = 10)
-	private String taxNumber;
 	
 }

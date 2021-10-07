@@ -1,6 +1,6 @@
 package com.example.ReCapProject.entities.concretes;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "maintenance")
+@Table(name = "maintenances")
 public class Maintenance {
 
 	@Id
@@ -33,9 +33,12 @@ public class Maintenance {
 	private boolean inMaintenance = false;
 	
 	@Column(name = "maintenance_date")
-	private Date maintenanceDate;
+	private LocalDate maintenanceDate;
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "car_id")
 	private Car car;
+	
 }

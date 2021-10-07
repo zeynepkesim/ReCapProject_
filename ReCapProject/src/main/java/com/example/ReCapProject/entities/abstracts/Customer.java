@@ -10,10 +10,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "customers")
+@EqualsAndHashCode(callSuper = false)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Customer extends ApplicationUser { 
 
 }

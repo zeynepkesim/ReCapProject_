@@ -11,9 +11,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateInvoiceRequest implements Request{
+public class UpdateInvoiceRequest implements Request {
 
 	private int invoiceId;
-	
-	
+		
 }

@@ -1,6 +1,6 @@
 package com.example.ReCapProject.entities.requests.maintenance;
 
-import java.util.Date;
+import com.example.ReCapProject.core.entities.abstracts.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateMaintenanceRequest {
+public class CreateMaintenanceRequest implements Request {
 
 	private int carId;
-	private Date maintenanceDate;
+	private String maintenanceDate;
 	
 }

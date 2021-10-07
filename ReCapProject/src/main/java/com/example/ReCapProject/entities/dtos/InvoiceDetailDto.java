@@ -12,13 +12,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InvoiceDto implements Dto{
+public class InvoiceDetailDto implements Dto {
 
 	private String invoiceNo;
 	private LocalDateTime creationDate;
+	private int rentalId;
 	private LocalDate rentDate;
 	private LocalDate returnDate;
-	private long pickUpKilometer;
-	private long returnKilometer;
 	private double rentalPrice;
+	private long pickUpKilometer;
+	private long returnKilometer;	
+	private int carId;
+	private String brandBrandName;
+	private String modelName;
+	private int modelYear;
+	
 }

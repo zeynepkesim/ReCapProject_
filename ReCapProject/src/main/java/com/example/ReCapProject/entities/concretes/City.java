@@ -33,7 +33,9 @@ public class City {
 	@Column(name = "city_name")
 	private String cityName;
 	
-	@OneToMany(mappedBy = "city", cascade = CascadeType.MERGE)
+	
+	
+	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
 	private List<Car> cars;
 	
 }

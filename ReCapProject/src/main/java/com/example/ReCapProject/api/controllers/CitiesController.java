@@ -16,6 +16,7 @@ import com.example.ReCapProject.business.abstracts.CityService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.City;
+import com.example.ReCapProject.entities.dtos.CityDetailDto;
 import com.example.ReCapProject.entities.requests.city.CreateCityRequest;
 import com.example.ReCapProject.entities.requests.city.DeleteCityRequest;
 import com.example.ReCapProject.entities.requests.city.UpdateCityRequest;
@@ -27,31 +28,54 @@ public class CitiesController {
 
 	private CityService cityService;
 
+	
 	@Autowired
 	public CitiesController(CityService cityService) {
+		
 		this.cityService = cityService;
+		
 	}
 	
-	@PostMapping("/addcity")
+	
+	@PostMapping("/add")
 	public Result add(@Valid CreateCityRequest entity) {
 		return this.cityService.add(entity);
 	}
 	
-	@PostMapping("/updatecity")
+	
+	@PostMapping("/update")
 	public Result update(@Valid UpdateCityRequest entity) {
 		return this.cityService.update(entity);
 	}
 	
-	@DeleteMapping("/deletecity")
+	
+	@DeleteMapping("/delete")
 	public Result delete(@Valid DeleteCityRequest entity) {
 		return this.cityService.delete(entity);
 	}
 	
-	@GetMapping("/getallcities")
+	
+	@GetMapping("/getall")
 	public DataResult<List<City>> getAll() {
 		return this.cityService.getAll();
 	}
 	
 	
+	@GetMapping("/getbyid")
+	public DataResult<City> getById(int cityId) {
+		return this.cityService.getById(cityId);
+	}
+	
+	
+	@GetMapping("/getallcitydetails")
+	public DataResult<List<CityDetailDto>> getAllCityDetails() {
+		return this.cityService.getAllCityDetails();
+	}
+	
+	
+	@GetMapping("/getdetailsbyid")
+	public DataResult<CityDetailDto> getDetailsById(int cityId) {
+		return this.cityService.getDetailsById(cityId);
+	}
 	
 }

@@ -22,7 +22,7 @@ public class CreateCarRequest implements Request {
 	private int brandId;
 	
 	@NotNull
-	private int colorId;;
+	private int colorId;
 	
 	@NotNull
 	private int cityId;
@@ -32,9 +32,6 @@ public class CreateCarRequest implements Request {
 	private String description;
 	
 	@NotNull
-	private long kilometer;
-	
-	@NotNull
 	private double dailyPrice;
 	
 	@Max(1600)
@@ -42,4 +39,7 @@ public class CreateCarRequest implements Request {
 	@NotNull
 	private double minFindexPoint;
 	
+	@NotNull
+	private long currentKilometer;
+			
 }

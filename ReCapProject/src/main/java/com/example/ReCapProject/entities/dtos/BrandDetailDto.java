@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditCardDto implements Dto{
+public class BrandDetailDto implements Dto {
+	
+	private String brandBrandName;   //when it's brandName, mapping doesn't work.
+	private String modelName;
+	private int modelYear;
 
-	private int userId;
-	private String cardBeholderName;
-	private String cardName;
-	private String creditCardNumber;
-	private String cvvCode;
-	private String expireDate;
 }

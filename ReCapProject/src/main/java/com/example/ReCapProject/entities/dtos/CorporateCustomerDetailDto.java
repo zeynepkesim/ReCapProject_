@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CorporateCustomerDto implements Dto {
-	
-	// Learn how to draw info from List of Dto
+public class CorporateCustomerDetailDto implements Dto {
 	
 	private int userId;
-	private String email;
+	private String taxNumber;
 	private String companyName;
+	private String email;
 	
 }

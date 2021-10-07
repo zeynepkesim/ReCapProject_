@@ -22,11 +22,17 @@ public class UpdateIndividualCustomerRequest implements Request {
 	
 	@NotNull
 	@NotBlank
+	@Size(min = 11, max = 11)
+	private String nationalIdNumber;
+	
+	@NotNull
+	@NotBlank
 	private String firstName;
 	
 	@NotNull
 	@NotBlank
 	private String lastName;
+	
 	@NotNull
 	@NotBlank
 	private String email;
@@ -34,10 +40,5 @@ public class UpdateIndividualCustomerRequest implements Request {
 	@NotNull
 	@NotBlank
 	private String password;
-	
-	@NotNull
-	@NotBlank
-	@Size(min = 11, max = 11)
-	private String nationalId;
-	
+		
 }

@@ -25,6 +25,6 @@ public class CreateBrandRequest implements Request {
 	private String modelName;
 	
 	@NotNull
-	@NotBlank
 	private int modelYear;
+	
 }

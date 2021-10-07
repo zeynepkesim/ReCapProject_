@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteCreditCardRequest implements Request{
+public class DeleteCreditCardRequest implements Request {
 
 	@NotNull
 	private int cardId;

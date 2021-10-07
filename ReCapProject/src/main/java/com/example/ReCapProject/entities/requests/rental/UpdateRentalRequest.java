@@ -1,7 +1,12 @@
 package com.example.ReCapProject.entities.requests.rental;
 
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+
 import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +17,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRentalRequest implements Request  {
+public class UpdateRentalRequest implements Request {
 
 	@NotNull
 	private int rentalId;
@@ -21,12 +26,16 @@ public class UpdateRentalRequest implements Request  {
 	private int returnCityId;
 	
 	@NotNull
+	@NotBlank
 	private String returnDate;
 	
 	@NotNull
 	private long returnKilometer;
 	
 	@NotNull
-	private boolean isReturned;
+	private boolean isReturned = false;
+	
+	@Nullable
+	private List<Integer> additionalServiceId;
 	
 }

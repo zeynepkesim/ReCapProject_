@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCreditCardRequest implements Request{
+public class CreateCreditCardRequest implements Request {
 
 	@NotNull
 	private int userId;
@@ -25,10 +25,6 @@ public class CreateCreditCardRequest implements Request{
 	@NotNull
 	@NotBlank
 	private String cardBeholderName;
-	
-	@NotNull
-	@NotBlank
-	private String cardName;
 	
 	@NotNull
 	@NotBlank

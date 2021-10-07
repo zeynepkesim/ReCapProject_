@@ -9,7 +9,7 @@ import com.example.ReCapProject.entities.concretes.IndividualCustomer;
 public interface FindexService {
 
 	DataResult<Double> evaluateFindexPointForCorporateCustomer(String taxNumber);	
-	DataResult<Double> evaluateFindexPointForIndividualCustomer(String nationalId);
+	DataResult<Double> evaluateFindexPointForIndividualCustomer(String nationalIdNumber);
 	
 	Result checkFindexPointsForCorporate(CorporateCustomer corporateCustomer, Car car);
 	Result checkFindexPointsForIndividual(IndividualCustomer individualCustomer, Car car);

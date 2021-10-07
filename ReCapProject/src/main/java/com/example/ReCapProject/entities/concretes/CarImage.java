@@ -35,10 +35,13 @@ public class CarImage {
 	@Column(name = "image_path")
 	private String imagePath;
 	
-	@Column(name = "image_date")
+	@Column(name = "date")
 	private LocalDateTime date;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST , fetch = FetchType.EAGER)
+	
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "car_id")
 	private Car car;
+	
 }

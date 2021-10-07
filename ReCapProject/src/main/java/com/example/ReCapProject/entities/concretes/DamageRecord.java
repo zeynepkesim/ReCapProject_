@@ -30,7 +30,9 @@ public class DamageRecord {
 	@Column(name = "record_info")
 	private String recordInfo;
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "car_id")
 	private Car car;
 	

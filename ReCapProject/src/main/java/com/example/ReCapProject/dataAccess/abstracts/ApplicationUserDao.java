@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.example.ReCapProject.entities.abstracts.ApplicationUser;
 
 @Repository
-public interface ApplicationUserDao extends JpaRepository<ApplicationUser, Integer>{
+public interface ApplicationUserDao extends JpaRepository <ApplicationUser, Integer> {
 
 	boolean existsByEmail(String email);
 	

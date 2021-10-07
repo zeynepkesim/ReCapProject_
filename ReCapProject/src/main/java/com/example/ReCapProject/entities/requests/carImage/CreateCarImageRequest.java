@@ -1,7 +1,5 @@
 package com.example.ReCapProject.entities.requests.carImage;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 
@@ -18,9 +16,5 @@ public class CreateCarImageRequest implements Request {
 
 	@NotNull
 	private int carId;
-	
-	
-	@NotNull
-	MultipartFile file;
 	
 }

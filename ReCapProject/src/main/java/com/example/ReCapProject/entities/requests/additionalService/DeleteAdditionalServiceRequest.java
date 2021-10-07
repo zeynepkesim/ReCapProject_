@@ -1,6 +1,7 @@
 package com.example.ReCapProject.entities.requests.additionalService;
 
 import com.example.ReCapProject.core.entities.abstracts.Request;
+import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteAdditionalServiceRequest implements Request {
-	
-	private int additionalServiceId;
 
+	@NotNull
+	private int additionalServiceId;
+	
 }

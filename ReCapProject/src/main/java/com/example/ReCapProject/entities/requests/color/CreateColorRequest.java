@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateColorRequest implements Request{
+public class CreateColorRequest implements Request {
 
 	@NotNull
 	@NotBlank

@@ -2,6 +2,8 @@ package com.example.ReCapProject.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import com.example.ReCapProject.business.abstracts.BrandService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.Brand;
+import com.example.ReCapProject.entities.dtos.BrandDetailDto;
 import com.example.ReCapProject.entities.requests.brand.CreateBrandRequest;
 import com.example.ReCapProject.entities.requests.brand.DeleteBrandRequest;
 import com.example.ReCapProject.entities.requests.brand.UpdateBrandRequest;
@@ -21,33 +24,58 @@ import com.example.ReCapProject.entities.requests.brand.UpdateBrandRequest;
 @RestController
 @RequestMapping("/api/brands")
 @CrossOrigin
-public class BrandController {
+public class BrandsController {
 
 	private BrandService brandService;
+	
 
 	@Autowired
-	public BrandController(BrandService brandService) {
+	public BrandsController(BrandService brandService) {
+		
 		this.brandService = brandService;
+		
 	}
 	
-	@PostMapping("/addbrand")
-	public Result add(CreateBrandRequest brand) {
-		return this.brandService.add(brand);
+	
+	@PostMapping("/add")
+	public Result add(@Valid CreateBrandRequest brand) {		
+		return this.brandService.add(brand);		
 	}
 	
-	@PostMapping("/updatebrand")
-	public Result update(UpdateBrandRequest brand) {
-		return this.brandService.update(brand);
+	
+	@PostMapping("/update")
+	public Result update(@Valid UpdateBrandRequest brand) {	
+		return this.brandService.update(brand);	
 	}
 	
-	@DeleteMapping("/deletebrand")
-	public Result delete(DeleteBrandRequest brand) {
+	
+	@DeleteMapping("/delete")
+	public Result delete(@Valid DeleteBrandRequest brand) {
 		return this.brandService.delete(brand);
 	}
+	
 	
 	@GetMapping("/getall")
 	public DataResult<List<Brand>> getAll() {
 		return this.brandService.getAll();
+	}
+	
+	
+	@GetMapping("/getbyid")
+	public DataResult<Brand> getById(int brandId) {
+		return this.brandService.getById(brandId);
+	}
+	
+	
+	@GetMapping("/getallbranddetails")
+	public DataResult<List<BrandDetailDto>> getAllBrandDetails() {
+		return this.brandService.getAllBrandDetails();
+	}
+	
+	
+	@GetMapping("/getdetailsbyid")
+	public DataResult<BrandDetailDto> getDetailsById(int brandId) {
+		return this.brandService.getDetailsById(brandId);
 	}
 	
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.ReCapProject.entities.concretes.Maintenance;
 
 @Repository
-public interface MaintenanceDao extends JpaRepository<Maintenance, Integer>{
+public interface MaintenanceDao extends JpaRepository <Maintenance, Integer> {
 
 	List<Maintenance> getByCar_CarId(int carId);
 	

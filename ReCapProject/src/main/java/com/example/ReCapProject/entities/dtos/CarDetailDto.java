@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CarDetailDto implements Dto {
 
-	private double dailyPrice;
-	private String modelName;
-	private String brandName;
-	private int modelYear;
-	private String colorName;
 	private boolean isAvailable;
+	private double dailyPrice;
+	private String brandBrandName;   //when it's brandName, mapping doesn't work.
+	private String brandModelName;   //
+	private int brandModelYear;      //
+	private String colorName;
+	private String cityName;
+	
 }

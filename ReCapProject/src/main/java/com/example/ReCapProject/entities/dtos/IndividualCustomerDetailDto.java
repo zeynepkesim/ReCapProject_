@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IndividualCustomerDto implements Dto {
+public class IndividualCustomerDetailDto implements Dto {
 
 	private int userId;
-	private String email;
+	private String nationalIdNumber;
 	private String firstName;
 	private String lastName;
-	
+	private String email;
 	
 }

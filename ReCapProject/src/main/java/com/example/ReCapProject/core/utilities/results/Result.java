@@ -3,22 +3,24 @@ package com.example.ReCapProject.core.utilities.results;
 public class Result {
 	
 	private boolean success;
-	private String messege;
+	private String message;
+	
 	
 	public Result(boolean success) {
 		this.success = success;
 	}
 	
-	public Result(boolean success, String messege) {
+	public Result(boolean success, String message) {
 		this.success = success;
-		this.messege = messege;
+		this.message = message;
 	}
 
 	public boolean isSuccess() {
 		return success;
 	}
 
-	public String getMessege() {
-		return messege;
+	public String getMessage() {
+		return message;
 	}
+	
 }

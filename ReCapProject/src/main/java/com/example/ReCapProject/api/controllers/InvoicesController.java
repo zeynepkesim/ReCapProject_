@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ReCapProject.business.abstracts.InvoiceService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.entities.concretes.Invoice;
-import com.example.ReCapProject.entities.dtos.InvoiceDto;
+import com.example.ReCapProject.entities.dtos.InvoiceDetailDto;
 
 @RestController
 @RequestMapping("/api/invoices")
@@ -21,29 +21,42 @@ public class InvoicesController {
 
 	private InvoiceService invoiceService;
 
+	
 	@Autowired
 	public InvoicesController(InvoiceService invoiceService) {
+		
 		this.invoiceService = invoiceService;
+		
 	}
 	
-	@GetMapping("/getall")
-	public DataResult<List<Invoice>> getAll() {
-		return this.invoiceService.getAll();
-	}
-	
-	@GetMapping("/getbycreationdate")
-	public DataResult<List<Invoice>> getByCreationDate(@RequestParam String minDate, @RequestParam String maxDate) {
-		return this.invoiceService.getByCreationDateBetween(minDate, maxDate);
-	}
 	
 	@GetMapping("/getbyuserid")
 	public DataResult<Invoice> getByUserId(int userId) {
 		return this.invoiceService.getById(userId);
 	}
 	
-	@GetMapping("/getinvoicedetails")
-	public DataResult<List<InvoiceDto>> getAllInvoiceDetails() {
-		return this.invoiceService.getAllInvoiceDetails();
+	
+	@GetMapping("/getall")
+	public DataResult<List<Invoice>> getAll() {
+		return this.invoiceService.getAll();
 	}
 	
+	
+	@GetMapping("/getbycreationdate")
+	public DataResult<List<Invoice>> getByCreationDate(@RequestParam String minDate, @RequestParam String maxDate) {
+		return this.invoiceService.getByCreationDateBetween(minDate, maxDate);
+	}
+	
+	
+	@GetMapping("/getbyid")
+	public DataResult<InvoiceDetailDto> getById(int invoiceId) {
+		return this.invoiceService.getInvoiceById(invoiceId);
+	}
+	
+	
+	@GetMapping("/getalldetails")
+	public DataResult<List<InvoiceDetailDto>> getAllDetails() {
+		return this.invoiceService.getAllInvoiceDetails();
+	}
+		
 }

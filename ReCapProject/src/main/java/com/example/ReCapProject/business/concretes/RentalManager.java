@@ -3,39 +3,42 @@ package com.example.ReCapProject.business.concretes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.ReCapProject.business.abstracts.CreditCardService;
+import com.example.ReCapProject.business.abstracts.AdditionalServiceService;
+import com.example.ReCapProject.business.abstracts.ApplicationUserService;
+import com.example.ReCapProject.business.abstracts.CarService;
+import com.example.ReCapProject.business.abstracts.CityService;
+import com.example.ReCapProject.business.abstracts.CorporateCustomerService;
+import com.example.ReCapProject.business.abstracts.IndividualCustomerService;
 import com.example.ReCapProject.business.abstracts.InvoiceService;
 import com.example.ReCapProject.business.abstracts.RentalService;
-import com.example.ReCapProject.business.constants.Messages;
+import com.example.ReCapProject.business.constants.messages.CarMessages;
+import com.example.ReCapProject.business.constants.messages.CityMessages;
+import com.example.ReCapProject.business.constants.messages.GeneralMessages;
+import com.example.ReCapProject.business.constants.messages.RentalMessages;
 import com.example.ReCapProject.core.services.abstracts.FindexService;
-import com.example.ReCapProject.core.services.abstracts.PosService;
 import com.example.ReCapProject.core.utilities.business.BusinessRules;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.ErrorResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
-import com.example.ReCapProject.dataAccess.abstracts.AdditionalServiceDao;
-import com.example.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
-import com.example.ReCapProject.dataAccess.abstracts.CarDao;
-import com.example.ReCapProject.dataAccess.abstracts.CityDao;
-import com.example.ReCapProject.dataAccess.abstracts.CorporateCustomerDao;
-import com.example.ReCapProject.dataAccess.abstracts.IndividualCustomerDao;
 import com.example.ReCapProject.dataAccess.abstracts.RentalDao;
 import com.example.ReCapProject.entities.abstracts.ApplicationUser;
 import com.example.ReCapProject.entities.concretes.AdditionalService;
 import com.example.ReCapProject.entities.concretes.Car;
 import com.example.ReCapProject.entities.concretes.City;
 import com.example.ReCapProject.entities.concretes.Rental;
-import com.example.ReCapProject.entities.dtos.RentalDto;
-import com.example.ReCapProject.entities.requests.creditCard.CreateCreditCardRequest;
+import com.example.ReCapProject.entities.dtos.AdditionalServiceDetailDto;
+import com.example.ReCapProject.entities.dtos.RentalDetailDto;
 import com.example.ReCapProject.entities.requests.invoice.CreateInvoiceRequest;
-import com.example.ReCapProject.entities.requests.payment.CreatePaymentRequest;
 import com.example.ReCapProject.entities.requests.rental.CreateRentalRequest;
 import com.example.ReCapProject.entities.requests.rental.DeleteRentalRequest;
 import com.example.ReCapProject.entities.requests.rental.UpdateRentalRequest;
@@ -44,59 +47,57 @@ import com.example.ReCapProject.entities.requests.rental.UpdateRentalRequest;
 public class RentalManager implements RentalService {
 
 	private RentalDao rentalDao;
-	private CarDao carDao;
-	private CorporateCustomerDao corporateCustomerDao;
-	private IndividualCustomerDao individualCustomerDao;
-	private ApplicationUserDao applicationUserDao;
-	private CityDao cityDao;
-	private AdditionalServiceDao additionalServiceDao;
 	
-	private FindexService findexPointService;
-	private CreditCardService creditCardService;
+	private CarService carService;
+	private CityService cityService;
 	private InvoiceService invoiceService;
-	private PosService posService;
+	private FindexService findexPointService;
+	private ApplicationUserService applicationUserService;
+	private AdditionalServiceService additionalServiceService;
+	private CorporateCustomerService corporateCustomerService;
+	private IndividualCustomerService individualCustomerService;	
+	
+	private ModelMapper modelMapper;
 	
 	
 	@Autowired
-	public RentalManager(RentalDao rentalDao, CarDao carDao, CorporateCustomerDao corporateCustomerDao, CityDao cityDao,
-			IndividualCustomerDao individualCustomerDao, ApplicationUserDao applicationUserDao, AdditionalServiceDao additionalServiceDao,
-			FindexService findexPointService, CreditCardService creditCardService, InvoiceService invoiceService, PosService posService) {
+	public RentalManager(RentalDao rentalDao, CarService carService, CityService cityService, InvoiceService invoiceService,
+			FindexService findexPointService, ApplicationUserService applicationUserService, AdditionalServiceService additionalServiceService,
+			CorporateCustomerService corporateCustomerService, IndividualCustomerService individualCustomerService, ModelMapper modelMapper) {
 		
-		this.carDao = carDao;
-		this.cityDao = cityDao;
 		this.rentalDao = rentalDao;
-		this.corporateCustomerDao = corporateCustomerDao;
-		this.individualCustomerDao = individualCustomerDao;
-		this.applicationUserDao = applicationUserDao;
-		this.additionalServiceDao = additionalServiceDao;
 		
-		this.findexPointService = findexPointService;
-		this.creditCardService = creditCardService;
+		this.carService = carService;
+		this.cityService = cityService;
 		this.invoiceService = invoiceService;	
-		this.posService = posService;
+		this.findexPointService = findexPointService;
+		this.applicationUserService = applicationUserService;
+		this.additionalServiceService = additionalServiceService;
+		this.corporateCustomerService = corporateCustomerService;
+		this.individualCustomerService = individualCustomerService;
+		
+		this.modelMapper = modelMapper;
+		
 	}
 	
 
 	@Override
 	public Result addForCorporate(CreateRentalRequest entity) {
 		
-		var result = BusinessRules.run(checkIfCarIsAvailable(), 
+		var result = BusinessRules.run(checkIfCarIsAvailable(entity.getCarId()), 
 				checkCarsPickUpCityIsAvailable(entity.getCarId(), entity.getPickUpCityId()), 
 				checkCarReturnCityIsAvailable(entity.getReturnCityId()),
-				findexPointService.checkFindexPointsForCorporate(corporateCustomerDao.getById(entity.getUserId()), carDao.getById(entity.getCarId())));
+				findexPointService.checkFindexPointsForCorporate(corporateCustomerService.getById(entity.getUserId()).getData(), carService.getById(entity.getCarId()).getData()),
+				checkRentalDates(entity.getRentDate(), entity.getReturnDate()));
 
 		
 		if(result != null)
 			return result;
 
 		
-		Car car = this.carDao.getById(entity.getCarId());
-		car.setAvailable(false);
+		Car car = this.carService.getById(entity.getCarId()).getData();
 		
-		ApplicationUser user = this.applicationUserDao.getById(entity.getUserId());
-		
-		AdditionalService additionalService = this.additionalServiceDao.getById(entity.getAdditionalServiceId());
-		
+		ApplicationUser user = this.applicationUserService.getById(entity.getUserId()).getData();
 		
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate rentDate = LocalDate.parse(entity.getRentDate(), dateFormat);
@@ -105,67 +106,42 @@ public class RentalManager implements RentalService {
 		Rental rental = new Rental();
 		rental.setCar(car);
 		rental.setUser(user);
-		rental.setAdditionalService(additionalService);
 		rental.setRentDate(rentDate);
 		rental.setReturnDate(returnDate);
 		rental.setPickUpKilometer(car.getCurrentKilometer());
-		rental.setRentalPrice(calculatePriceForReturnDate(entity).getData());
 		
+		List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
 		
-		//---------------------
-		CreateCreditCardRequest creditCard = new CreateCreditCardRequest();
-		creditCard.setCardBeholderName(entity.getCardBeholderName());
-		creditCard.setCardName(entity.getCardName());
-		creditCard.setCardNumber(entity.getCardNumber());
-		creditCard.setCvvCode(entity.getCvvCode());
-		creditCard.setExpireDate(entity.getExpireDate());
-		creditCard.setSaveCard(entity.isSaveCard());
-		creditCard.setUserId(entity.getUserId());
-		
-		if (!creditCardService.add(creditCard).isSuccess())
-			return new ErrorResult(Messages.CREDIT_CARD_IS_INVALID);
-		//---------------------
-		
-		CreatePaymentRequest createPaymentRequest = new CreatePaymentRequest();
-		createPaymentRequest.setCardBeholderName(creditCard.getCardBeholderName());
-		createPaymentRequest.setCarNumber(creditCard.getCardNumber());
-		createPaymentRequest.setCvvCode(creditCard.getCvvCode());
-		createPaymentRequest.setExpireDate(creditCard.getExpireDate());
-		createPaymentRequest.setPrice(rental.getRentalPrice());
-		
-		if(!this.posService.withdraw(createPaymentRequest).isSuccess())
-			return new ErrorResult(Messages.BALANCE_IS_NOT_ENOUGH);
-		
-		// Fields can't be null if there is no saved card
-		if(!creditCardService.checkCardInfo(creditCard).isSuccess())
-			return new ErrorResult(Messages.CREDIT_CARD_INFO_IS_NULL);
+		if(entity.getAdditionalServiceId() != null) {
+		for (Integer additionalServiceId : entity.getAdditionalServiceId()) {
+			additionalServices.add(this.additionalServiceService.getById(additionalServiceId).getData());
+			}
+		}
+		rental.setAdditionalServices(additionalServices);
+		rental.setRentalPrice(calculateTotalPrice(entity.getCarId(), additionalServices, entity.getReturnCityId(), rentDate, returnDate).getData());
 		
 		this.rentalDao.save(rental);
-		this.carDao.save(car);
 		
-		return new SuccessResult(Messages.RENTAL_ADDED);
+		return new SuccessResult(RentalMessages.RENTAL_ADDED);
+		
 	}
 	
 	
 	@Override
 	public Result addForIndividual(CreateRentalRequest entity) {
 		
-		var result = BusinessRules.run(checkIfCarIsAvailable(), 
-				findexPointService.checkFindexPointsForIndividual(individualCustomerDao.getById(entity.getUserId()), carDao.getById(entity.getCarId())),
-				checkCarsPickUpCityIsAvailable(entity.getCarId(), entity.getPickUpCityId()), checkCarReturnCityIsAvailable(entity.getReturnCityId()));
+		var result = BusinessRules.run(checkIfCarIsAvailable(entity.getCarId()),
+				findexPointService.checkFindexPointsForIndividual(individualCustomerService.getById(entity.getUserId()).getData(), carService.getById(entity.getCarId()).getData()),
+				checkCarsPickUpCityIsAvailable(entity.getCarId(), entity.getPickUpCityId()), checkCarReturnCityIsAvailable(entity.getReturnCityId()),
+				checkRentalDates(entity.getRentDate(), entity.getReturnDate()));
 						
 		
 		if(result != null)
 			return result;
 	
+		Car car = this.carService.getById(entity.getCarId()).getData();
 		
-		Car car = this.carDao.getById(entity.getCarId());
-		car.setAvailable(false);
-		
-		ApplicationUser user = this.applicationUserDao.getById(entity.getUserId());
-		
-		AdditionalService additionalService = this.additionalServiceDao.getById(entity.getAdditionalServiceId());
-		
+		ApplicationUser user = this.applicationUserService.getById(entity.getUserId()).getData();
 		
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate rentDate = LocalDate.parse(entity.getRentDate(), dateFormat);
@@ -174,50 +150,37 @@ public class RentalManager implements RentalService {
 		Rental rental = new Rental();
 		rental.setCar(car);
 		rental.setUser(user);
-		rental.setAdditionalService(additionalService);
 		rental.setRentDate(rentDate);
 		rental.setReturnDate(returnDate);
-		rental.setPickUpKilometer(car.getCurrentKilometer());
-		rental.setRentalPrice(calculatePriceForReturnDate(entity).getData());
+		rental.setPickUpKilometer(car.getCurrentKilometer());	
 		
+		List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
 		
-		CreateCreditCardRequest creditCard = new CreateCreditCardRequest();
-		creditCard.setCardBeholderName(entity.getCardBeholderName());
-		creditCard.setCardName(entity.getCardName());
-		creditCard.setCardNumber(entity.getCardNumber());
-		creditCard.setCvvCode(entity.getCvvCode());
-		creditCard.setExpireDate(entity.getExpireDate());
-		creditCard.setUserId(entity.getUserId());
-		creditCard.setSaveCard(entity.isSaveCard());
-		
-		if (!creditCardService.add(creditCard).isSuccess())
-			return new ErrorResult(Messages.CREDIT_CARD_IS_INVALID);
-				
-		CreatePaymentRequest createPaymentRequest = new CreatePaymentRequest();
-		createPaymentRequest.setCardBeholderName(creditCard.getCardBeholderName());
-		createPaymentRequest.setCarNumber(creditCard.getCardNumber());
-		createPaymentRequest.setCvvCode(creditCard.getCvvCode());
-		createPaymentRequest.setExpireDate(creditCard.getExpireDate());
-		createPaymentRequest.setPrice(rental.getRentalPrice());
-		
-		if(!this.posService.withdraw(createPaymentRequest).isSuccess())
-			return new ErrorResult(Messages.BALANCE_IS_NOT_ENOUGH);
-		
-		if(!creditCardService.checkCardInfo(creditCard).isSuccess())
-			return new ErrorResult(Messages.CREDIT_CARD_INFO_IS_NULL);
-		
+		if(entity.getAdditionalServiceId() != null) {
+		for (Integer additionalServiceId : entity.getAdditionalServiceId()) {
+			AdditionalService additionalService = this.additionalServiceService.getById(additionalServiceId).getData();
+			additionalServices.add(additionalService);
+			}
+		}
+		rental.setAdditionalServices(additionalServices);
+		rental.setRentalPrice(calculateTotalPrice(entity.getCarId(), additionalServices, entity.getReturnCityId(), rentDate, returnDate).getData());
 		
 		this.rentalDao.save(rental);
-		this.carDao.save(car);
 		
-		return new SuccessResult(Messages.RENTAL_ADDED);
+		return new SuccessResult(RentalMessages.RENTAL_ADDED);
+	
 	}
 	
 
 	@Override
 	public Result update(UpdateRentalRequest entity) {
 		
-		var result = BusinessRules.run(checkCarReturnCityIsAvailable(entity.getReturnCityId()));
+		var result = BusinessRules.run(checkCarReturnCityIsAvailable(entity.getReturnCityId()), 
+				checkReturnDate(this.rentalDao.getById(entity.getRentalId()).getRentDate(), entity.getReturnDate()),
+				checkIfReturnIsDelayed(entity.getRentalId(), entity.getReturnDate()),
+				checkIfReturnIsEarly(entity.getRentalId(), entity.getReturnDate()),
+				invoiceService.checkIfInvoiceExists(entity.getRentalId()), 
+				checkIfRentalIsPayed(entity.getRentalId()));
 		
 		if(result != null)
 			return result;
@@ -228,13 +191,28 @@ public class RentalManager implements RentalService {
 		Rental rental = this.rentalDao.getById(entity.getRentalId());
 		rental.setReturnKilometer(entity.getReturnKilometer());
 		rental.setReturnDate(returnDate);
+		rental.setReturned(entity.isReturned());
+		
+		List<AdditionalService> additionalServices = rental.getAdditionalServices();
+		
+		if(entity.getAdditionalServiceId() != null) {
+		for (Integer additionalServiceId : entity.getAdditionalServiceId()) {
+			additionalServices.add(this.additionalServiceService.getById(additionalServiceId).getData());
+			}
+		}
+		rental.setRentalPrice(calculateTotalPrice(rental.getCar().getCarId(), 
+				additionalServices, entity.getReturnCityId(), 
+				this.rentalDao.getById(entity.getRentalId()).getRentDate(), 
+				returnDate).getData());
 		
 		Car car = rental.getCar();
-		car.setCity(this.cityDao.getById(entity.getReturnCityId()));
 		car.setAvailable(entity.isReturned());
 		car.setCurrentKilometer(entity.getReturnKilometer());
+		car.setCity(this.cityService.getById(entity.getReturnCityId()).getData());
 		
-		var result2 = BusinessRules.run(checkCarIsReturned(entity));	// When car is returned; the Invoice is being created automatically.
+		this.rentalDao.saveAndFlush(rental);
+		
+		var result2 = BusinessRules.run(checkIfCarIsReturned(entity));	// When car is returned and the rental is payed; the Invoice is being created automatically.
 		
 		if(result2 != null)
 			return result2;
@@ -246,10 +224,8 @@ public class RentalManager implements RentalService {
 		
 		this.invoiceService.add(createInvoiceRequest);
 		
-		this.carDao.save(car);
-		this.rentalDao.save(rental);
-		
-		return new SuccessResult(Messages.RENTAL_UPDATED);
+		return new SuccessResult(RentalMessages.RENTAL_UPDATED);
+	
 	}
 	
 
@@ -260,91 +236,177 @@ public class RentalManager implements RentalService {
 		car.setAvailable(true);
 		
 		this.rentalDao.deleteById(entity.getRentalId());
-		return new SuccessResult(Messages.RENTAL_DELETED);
+		return new SuccessResult(RentalMessages.RENTAL_DELETED);
+	
 	}
 	
+	
+	@Override
+	public Result deleteById(int rentalId) {
+		
+		this.rentalDao.deleteById(rentalId);
+		return new SuccessResult();
+	
+	}
 
+	
 	@Override
 	public DataResult<List<Rental>> getAll() {
-		return new SuccessDataResult<List<Rental>>(this.rentalDao.findAll(), Messages.RENTALS_LISTED);
-	}
-	
-	
-	@Override
-	public DataResult<List<RentalDto>> getCarAndRentalDetails() {
-		return new SuccessDataResult<List<RentalDto>>(this.rentalDao.getCarAndRentalDetail(), Messages.RENTAL_DETAILS_LISTED);
-	}
-	
-	
-	@Override
-	public DataResult<List<Rental>> getOpenRentals() {
-		return new SuccessDataResult<List<Rental>>(this.rentalDao.getByCar_IsAvailableIsFalse(), Messages.RENTALS_LISTED);
-	}
-	
-	
-	@Override
-	public DataResult<List<Rental>> getClosedRentals() {
-		return new SuccessDataResult<List<Rental>>(this.rentalDao.getByCar_IsAvailableIsTrue(), Messages.RENTALS_LISTED);
-	}
-	
-	
-	private Result checkIfCarIsAvailable() {
 		
-		if(this.carDao.existsByIsAvailableIsTrue()) {
-			return new SuccessResult();
+		return new SuccessDataResult<List<Rental>>(this.rentalDao.findAll(), RentalMessages.RENTALS_LISTED);
+	
+	}
+	
+	
+	@Override
+	public DataResult<Rental> getById(int rentalId) {
+		
+		return new SuccessDataResult<Rental>(this.rentalDao.getById(rentalId));
+	
+	}
+	
+	
+	@Override
+	public DataResult<List<RentalDetailDto>> getOpenRentals() {
+	
+		List<Rental> rentals = this.rentalDao.getByIsPayedIsTrueAndIsReturnedIsFalse();
+		
+		List<RentalDetailDto> rentalDtos = rentals.stream()
+				.map(this::convertToDto)
+				.collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<RentalDetailDto>>(rentalDtos, RentalMessages.RENTALS_LISTED);
+	
+	}
+	
+	
+	@Override
+	public DataResult<List<RentalDetailDto>> getClosedRentals() {
+
+		List<Rental> rentals = this.rentalDao.getByIsPayedIsTrueAndIsReturnedIsTrue();
+		
+		List<RentalDetailDto> rentalDtos = rentals.stream()
+				.map(this::convertToDto)
+				.collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<RentalDetailDto>>(rentalDtos, RentalMessages.RENTALS_LISTED);
+	
+	}
+	
+	
+	@Override
+	public DataResult<List<RentalDetailDto>> getRentalDetails() {
+		
+		List<Rental> rentals = this.rentalDao.findAll();
+		
+		List<RentalDetailDto> rentalDtos = rentals.stream()
+				.map(this::convertToDto)
+				.collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<RentalDetailDto>>(rentalDtos, RentalMessages.RENTALS_LISTED);
+	
+	}
+	
+	
+    //BUG!	
+	@Override
+	public DataResult<RentalDetailDto> getRentalDetailById(int rentalId) {
+		
+		Rental rental = this.rentalDao.getById(rentalId);
+		
+		RentalDetailDto rentalDto = modelMapper.map(rental, RentalDetailDto.class);
+		
+		List<AdditionalServiceDetailDto> additionalServiceDetailDtos = new ArrayList<AdditionalServiceDetailDto>();
+		
+		for(AdditionalService additionalService : rental.getAdditionalServices()) {
+			
+			AdditionalServiceDetailDto additionalServiceDetailDto = modelMapper.map(additionalService, AdditionalServiceDetailDto.class);
+			additionalServiceDetailDtos.add(additionalServiceDetailDto);
 		}
 		
-		return new ErrorResult(Messages.CAR_IS_NOT_AVAILABLE);
+		rentalDto.setAdditionalServices(additionalServiceDetailDtos);
+		
+		return new SuccessDataResult<RentalDetailDto>(rentalDto);
 	}
 	
 	
-	private Result checkCarIsReturned(UpdateRentalRequest rental) {
+	private RentalDetailDto convertToDto(Rental rental) {
+		
+		RentalDetailDto rentalDto = modelMapper.map(rental, RentalDetailDto.class);
+		return rentalDto;
+	}
+	
+	
+	private Result checkIfCarIsAvailable(int carId) {
+		
+		if(this.carService.getById(carId).getData().isAvailable()) 
+			return new SuccessResult();
+		
+		return new ErrorResult(CarMessages.CAR_IS_NOT_AVAILABLE);
+	
+	}
+	
+	
+	private Result checkIfCarIsReturned(UpdateRentalRequest rental) {
 		
 		if(rental.isReturned()) 
 			return new SuccessResult();
 		
-		return new ErrorResult(Messages.CAR_IS_NOT_RETURNED);
+		return new ErrorResult(CarMessages.CAR_IS_NOT_RETURNED);
+	
+	}
+	
+	
+	private Result checkIfRentalIsPayed(int rentalId) {
+		
+		if(this.rentalDao.getById(rentalId).isPayed()) 
+			return new SuccessResult();
+		
+		return new ErrorResult(RentalMessages.RENTAL_IS_NOT_PAYED);
+	
 	}
 	
 		
 	private Result checkCarsPickUpCityIsAvailable(int carId, int pickUpCityId) {
 		
-		Car car = this.carDao.getById(carId);
-		if(car.getCity() != this.cityDao.getById(pickUpCityId))
-			return new ErrorResult(Messages.CAR_IS_NOT_IN_THE_CITY);
+		Car car = this.carService.getById(carId).getData();
+		if(car.getCity() != this.cityService.getById(pickUpCityId).getData())
+			return new ErrorResult(CarMessages.CAR_IS_NOT_IN_THE_CITY);
 		
 		return new SuccessResult();
+	
 	}
 	
 	
 	private Result checkCarReturnCityIsAvailable(int returnCityId) {
 		
-		for(City city : this.cityDao.findAll()) {
-			if(city.getClass() != this.cityDao.getById(returnCityId).getClass()) {
-				return new ErrorResult(Messages.CITY_SERVICE_IS_NOT_AVAILABLE);
+		for(City city : this.cityService.getAll().getData()) {
+			if(city.getClass() != this.cityService.getById(returnCityId).getData().getClass()) {
+				return new ErrorResult(CityMessages.CITY_SERVICE_IS_NOT_AVAILABLE);
 			}
 		}
 		return new SuccessResult();
 	}
 	
 	
-	private DataResult<Double> calculatePriceForReturnDate(CreateRentalRequest entity) {
+	private DataResult<Double> calculateTotalPrice(int carId, List<AdditionalService> additionalServices, int returnCityId, LocalDate rentDate, LocalDate returnDate) {
 		
-		if(entity.getReturnDate() == null) {
-			double deposit = (this.carDao.getById(entity.getCarId()).getDailyPrice() * 90);
+		if(returnDate == null) {
+			double deposit = (this.carService.getById(carId).getData().getDailyPrice() * 90);
 			return new SuccessDataResult<Double>(deposit);
 		}
-		double totalPrice =(rentalPriceCalculator(entity).getData() + calculateIfCarReturnedToDifferentCity(entity).getData()
-							+ additionalServiceFeeCalculator(entity).getData());
+		double totalPrice =(calculateRentalPrice(carId, additionalServices, rentDate, returnDate).getData() + calculateIfCarReturnedToDifferentCity(carId, returnCityId).getData());
+		
 		return new SuccessDataResult<Double>(totalPrice);
+		
 	}
 	
 	
 	private Result cashBackForUnindicatedReturnDate(UpdateRentalRequest entity) {
 		
-		if(rentalDao.getById(entity.getRentalId()).getReturnDate() == null) {	// Get rentals returnDate before it's saved to dataBase.
+		if(rentalDao.getById(entity.getRentalId()).getReturnDate() == null) {	
 			if(entity.getReturnDate() != null) {
-				System.out.println("Additional fee has been charged for Open-Rent and remaining cash has been sent to User.");
+				System.out.println(RentalMessages.RENTAL_REMAINING_CASH_RETURNED);
 				return new SuccessResult();
 			}
 		}
@@ -352,39 +414,84 @@ public class RentalManager implements RentalService {
 	}
 	
 	
-	private DataResult<Double> calculateIfCarReturnedToDifferentCity(CreateRentalRequest entity) {
-		if(this.carDao.getById(entity.getCarId()).getCity() != this.cityDao.getById(entity.getReturnCityId()))
+	private DataResult<Double> calculateIfCarReturnedToDifferentCity(int carId, int returnCityId) {
+		if(this.carService.getById(carId).getData().getCity() != this.cityService.getById(returnCityId).getData())
 			return new SuccessDataResult<Double>(500.0);
 		
 		return new SuccessDataResult<Double>(0.0);
 	}
 	
 	
-	private DataResult<Double> rentalPriceCalculator(CreateRentalRequest entity) {
-		
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate rentDate = LocalDate.parse(entity.getRentDate(), dateFormat);
-		LocalDate returnDate = LocalDate.parse(entity.getReturnDate(), dateFormat);
+	private DataResult<Double> calculateRentalPrice(int carId, List<AdditionalService> additionalServices, LocalDate rentDate, LocalDate returnDate) {
 		
 		long days = ChronoUnit.DAYS.between(rentDate, returnDate);
 		
-		Car car = this.carDao.getById(entity.getCarId());
+		Car car = this.carService.getById(carId).getData();
 		
-		return new SuccessDataResult<Double>((car.getDailyPrice() * days));			
+		return new SuccessDataResult<Double>((car.getDailyPrice() * days) + (calculateTotalFeeForAdditionalServices(additionalServices).getData() * days));			
+	
 	}
 	
-	private DataResult<Double> additionalServiceFeeCalculator(CreateRentalRequest entity) {
+	
+	private DataResult<Double> calculateTotalFeeForAdditionalServices(List<AdditionalService> additionalServices) {
+		
+		double totalFee = 0;
+		
+		for (AdditionalService additionalService : additionalServices) 
+				totalFee += additionalService.getAdditionalServiceFee();			
+		
+		return new SuccessDataResult<Double>(totalFee);
+	
+	}
+	
+	
+	private Result checkRentalDates(String rentDate, String returnDate) {
 		
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate rentDate = LocalDate.parse(entity.getRentDate(), dateFormat);
-		LocalDate returnDate = LocalDate.parse(entity.getReturnDate(), dateFormat);
+		LocalDate rentDate1 = LocalDate.parse(rentDate, dateFormat);
+		LocalDate returnDate1 = LocalDate.parse(returnDate, dateFormat);
+		LocalDate today = LocalDate.parse(LocalDate.now().toString());
 		
-		long days = ChronoUnit.DAYS.between(rentDate, returnDate);
+		if(rentDate1.isBefore(today) || returnDate1.isBefore(rentDate1))
+			return new ErrorResult(GeneralMessages.INVALID_DATES);
 		
-		AdditionalService additionalService = this.additionalServiceDao.getById(entity.getAdditionalServiceId());
+		return new SuccessResult();
+	}
+	
+	
+	private Result checkReturnDate(LocalDate rentDate, String returnDate) {
 		
-		return new SuccessDataResult<Double>(additionalService.getAdditionalServiceFee() * days);
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate returnDate1 = LocalDate.parse(returnDate, dateFormat);
 		
+		if(returnDate1.isBefore(rentDate))
+			return new ErrorResult(GeneralMessages.INVALID_RETURN_DATE);
+		
+		return new SuccessResult();
+	}
+	
+	
+	private Result checkIfReturnIsDelayed(int rentalId, String returnDate) {
+		
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate returnDate1 = LocalDate.parse(returnDate, dateFormat);
+		
+		if(this.rentalDao.getById(rentalId).getReturnDate() != null && returnDate1.isAfter(this.rentalDao.getById(rentalId).getReturnDate())) 
+			System.out.println(CarMessages.CAR_HAS_BEEN_DELAYED);
+		
+		return new SuccessResult();
+	}
+	
+	
+	private Result checkIfReturnIsEarly(int rentalId, String returnDate) {
+		
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate returnDate1 = LocalDate.parse(returnDate, dateFormat);
+		
+		if(this.rentalDao.getById(rentalId).getReturnDate() != null && returnDate1.isBefore(this.rentalDao.getById(rentalId).getReturnDate())) 
+			System.out.println(CarMessages.CAR_HAS_BEEN_BROUGHT_EARLY);
+		
+		return new SuccessResult();
 	}
 	
 }

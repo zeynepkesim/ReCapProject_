@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.example.ReCapProject.entities.concretes.City;
 
 @Repository
-public interface CityDao extends JpaRepository<City, Integer> {
+public interface CityDao extends JpaRepository <City, Integer> {
 
+	boolean existsByCityName(String cityName);
+	
 }

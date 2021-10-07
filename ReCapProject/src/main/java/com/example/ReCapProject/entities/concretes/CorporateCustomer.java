@@ -13,19 +13,19 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "corporate_customers")
-public class CorporateCustomer extends Customer{
+@EqualsAndHashCode(callSuper = false)
+public class CorporateCustomer extends Customer {
 
+	@NotNull
+	@Column(name = "tax_number")
+	private String taxNumber;
+	
 	@NotNull
 	@Column(name = "company_name")
 	private String companyName;
 	
-	@NotNull
-	@Column(name = "tax_number")
-	private String taxNumber;
-
 }

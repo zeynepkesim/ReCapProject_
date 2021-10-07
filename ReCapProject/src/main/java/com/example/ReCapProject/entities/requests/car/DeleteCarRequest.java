@@ -1,5 +1,6 @@
 package com.example.ReCapProject.entities.requests.car;
 
+import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteCarRequest {
+public class DeleteCarRequest implements Request {
 
 	@NotNull
 	private int carId;

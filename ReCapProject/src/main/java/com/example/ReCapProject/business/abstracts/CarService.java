@@ -13,20 +13,21 @@ import com.example.ReCapProject.entities.requests.car.DeleteCarRequest;
 import com.example.ReCapProject.entities.requests.car.UpdateCarRequest;
 
 @Repository
-public interface CarService  {
+public interface CarService {
 
 	Result add(CreateCarRequest entity);
 	Result update(UpdateCarRequest entity);
 	Result delete(DeleteCarRequest entity);
 	
-	DataResult<Car> getByCarId(int carId);
-	
 	DataResult<List<Car>> getAll();
+	
+	DataResult<Car> getById(int carId);
+	
 	DataResult<List<Car>> getCarByBrandName(String brandName);
 	DataResult<List<Car>> getCarByColorName(String colorName);
 	DataResult<List<Car>> getByCityName(String cityName);
 	
-	DataResult<List<CarDetailDto>> getCarsDetail();
-	
+	DataResult<List<CarDetailDto>> getAllCarDetails();
+	DataResult<CarDetailDto> getDetailsById(int carId); 
 	
 }

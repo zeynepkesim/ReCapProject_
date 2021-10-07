@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateColorRequest implements Request{
+public class UpdateColorRequest implements Request {
 
 	@NotNull
 	private int colorId;

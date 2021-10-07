@@ -2,6 +2,8 @@ package com.example.ReCapProject.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,7 @@ import com.example.ReCapProject.business.abstracts.CreditCardService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.CreditCard;
-import com.example.ReCapProject.entities.dtos.CreditCardDto;
+import com.example.ReCapProject.entities.dtos.CreditCardDetailDto;
 import com.example.ReCapProject.entities.requests.creditCard.CreateCreditCardRequest;
 import com.example.ReCapProject.entities.requests.creditCard.DeleteCreditCardRequest;
 import com.example.ReCapProject.entities.requests.creditCard.UpdateCreditCardRequest;
@@ -26,33 +28,47 @@ public class CreditCardsController {
 
 	private CreditCardService creditCardService;
 
+	
 	@Autowired
 	public CreditCardsController(CreditCardService creditCardService) {
+		
 		this.creditCardService = creditCardService;
+		
 	}
 	
-	@PostMapping("/addcreditcard")
-	public Result add(CreateCreditCardRequest entity) {
+	
+	@PostMapping("/add")
+	public Result add(@Valid CreateCreditCardRequest entity) {
 		return this.creditCardService.add(entity);
 	}
 	
-	@PostMapping("/updatecreditcard")
-	public Result update(UpdateCreditCardRequest entity) {
+	
+	@PostMapping("/update")
+	public Result update(@Valid UpdateCreditCardRequest entity) {
 		return this.creditCardService.update(entity);
 	}
 	
-	@DeleteMapping("/deletecreditcard")
-	public Result delete(DeleteCreditCardRequest entity) {
+	
+	@DeleteMapping("/delete")
+	public Result delete(@Valid DeleteCreditCardRequest entity) {
 		return this.creditCardService.delete(entity);
 	}
+	
+	
+	@GetMapping("/getbyid")
+	public DataResult<CreditCard> getById(int creditCardId) {
+		return this.creditCardService.getById(creditCardId);
+	}
+	
 	
 	@GetMapping("/getcreditcardsforuser")
 	public DataResult<List<CreditCard>> getCreditCardForUser(int userId) {
 		return this.creditCardService.getCreditCardsForUser(userId);
 	}
 	
+	
 	@GetMapping("/getcreditcarddetails")
-	public DataResult<List<CreditCardDto>> getCreditCardDetails(int userId) {
+	public DataResult<List<CreditCardDetailDto>> getCreditCardDetails(int userId) {
 		return this.creditCardService.getCreditCardDetails(userId);
 	}
 	

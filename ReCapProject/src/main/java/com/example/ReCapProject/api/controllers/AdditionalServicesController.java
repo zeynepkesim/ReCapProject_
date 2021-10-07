@@ -16,7 +16,7 @@ import com.example.ReCapProject.business.abstracts.AdditionalServiceService;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.entities.concretes.AdditionalService;
-import com.example.ReCapProject.entities.dtos.AdditionalServiceDto;
+import com.example.ReCapProject.entities.dtos.AdditionalServiceDetailDto;
 import com.example.ReCapProject.entities.requests.additionalService.CreateAdditionalServiceRequest;
 import com.example.ReCapProject.entities.requests.additionalService.DeleteAdditionalServiceRequest;
 import com.example.ReCapProject.entities.requests.additionalService.UpdateAdditionalServiceRequest;
@@ -25,42 +25,63 @@ import com.example.ReCapProject.entities.requests.additionalService.UpdateAdditi
 @RequestMapping("/api/additionalservices")
 @CrossOrigin
 public class AdditionalServicesController {
-	
+
 	private AdditionalServiceService additionalServiceService;
 
+	
 	@Autowired
 	public AdditionalServicesController(AdditionalServiceService additionalServiceService) {
+		
 		this.additionalServiceService = additionalServiceService;
+		
 	}
 	
-	@PostMapping("/addadditionalservice")
+	
+	@PostMapping("/add")
 	public Result add(@Valid CreateAdditionalServiceRequest entity) {
-		return this.additionalServiceService.add(entity);
+		return this.additionalServiceService.add(entity);	
 	}
 	
-	@PostMapping("/updateadditionalservice")
-	public Result update(@Valid UpdateAdditionalServiceRequest entity) {
-		return this.additionalServiceService.update(entity);
+	
+	@PostMapping("/update")
+	public Result update(@Valid UpdateAdditionalServiceRequest entity) {		
+		return this.additionalServiceService.update(entity);		
 	}
 	
-	@DeleteMapping("/deleteadditionalservice")
+	
+	@DeleteMapping("delete")
 	public Result delete(@Valid DeleteAdditionalServiceRequest entity) {
 		return this.additionalServiceService.delete(entity);
 	}
 	
-	@GetMapping("/getalladditionalservices")
+	
+	@GetMapping("/getall")
 	public DataResult<List<AdditionalService>> getAll() {
 		return this.additionalServiceService.getAll();
 	}
 	
-	@GetMapping("getadditionalservicesbyrentalid")
-	public DataResult<List<AdditionalService>> getAdditionalServicesByRentalId(int rentalId) {
-		return this.additionalServiceService.getAdditionalServicesByRentalId(rentalId);
+	
+	@GetMapping("/getbyrentalid")
+	public DataResult<List<AdditionalService>> getByRentalId(int rentalId) {
+		return this.additionalServiceService.getByRentalId(rentalId);
 	}
 	
-	@GetMapping("getadditionalservicedetails")
-	public DataResult<List<AdditionalServiceDto>> getAdditionalServiceDetails() {
-		return this.additionalServiceService.getAdditionalServiceDetails();
+	
+	@GetMapping("/getbyid")
+	public DataResult<AdditionalService> getById(int additionalServiceId) {
+		return this.additionalServiceService.getById(additionalServiceId);
 	}
-
+	
+	
+	@GetMapping("/getalladditionalservicedetails")
+	public DataResult<List<AdditionalServiceDetailDto>> getAllAdditionalServiceDetails() {
+		return this.additionalServiceService.getAllAdditionalServiceDetails();
+	}
+	
+	
+	@GetMapping("/getdetailsbyid")
+	public DataResult<AdditionalServiceDetailDto> getDetailsById(int additionalServiceId) {
+		return this.additionalServiceService.getDetailsById(additionalServiceId);
+	}
+		
 }

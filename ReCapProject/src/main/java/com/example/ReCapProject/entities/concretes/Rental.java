@@ -1,6 +1,7 @@
 package com.example.ReCapProject.entities.concretes;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,6 +45,9 @@ public class Rental {
 	@Nullable
 	@Column(name = "return_date")
 	private LocalDate returnDate;
+
+	@Column(name = "rental_price")
+	private double rentalPrice;
 	
 	@NotNull
 	@Column(name = "pick_up_kilometer")
@@ -52,22 +57,29 @@ public class Rental {
 	@Column(name = "return_kilometer")
 	private long returnKilometer;
 	
-	@Column(name = "rental_price")
-	private double rentalPrice;
+	@Column(name = "is_payed")
+	private boolean isPayed = false;
 	
-	@OneToOne(mappedBy = "rental", cascade = CascadeType.MERGE)
-	private Invoice invoice;
+	@Nullable
+	@Column(name = "is_returned", columnDefinition = "boolean default true")
+	private boolean isReturned = true;
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private ApplicationUser user;
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "car_id")
 	private Car car;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "user_id")
-	private ApplicationUser user;
-		
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "additional_service_id")
-	private AdditionalService additionalService;
 	
+	@OneToMany(mappedBy = "rental", cascade = CascadeType.ALL)
+	private List<AdditionalService> additionalServices;
+	
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "invoice_id")
+	private Invoice invoice;
+		
 }

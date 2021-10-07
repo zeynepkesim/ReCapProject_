@@ -1,5 +1,7 @@
 package com.example.ReCapProject.api.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +15,21 @@ import com.example.ReCapProject.entities.requests.userLogin.UserLogInRequest;
 @RestController
 @RequestMapping("/api/logins")
 @CrossOrigin
-public class LogInController {
+public class LogInsController {
 
 	private LogInService logInService;
+	
 
 	@Autowired
-	public LogInController(LogInService logInService) {
+	public LogInsController(LogInService logInService) {
+		
 		this.logInService = logInService;
+		
 	}
 
+	
 	@GetMapping("/login")
-	public Result login(UserLogInRequest loginRequest) {
+	public Result login(@Valid UserLogInRequest loginRequest) {
 		return this.logInService.logIn(loginRequest);
 	}
 	

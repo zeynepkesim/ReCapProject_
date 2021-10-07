@@ -18,18 +18,18 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "creditCards"})
 @Table(name = "application_users")
+@EqualsAndHashCode(callSuper = false)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "creditCards", "rentals"})
 public class ApplicationUser extends User {
-	
-	@OneToMany(mappedBy = "user")
-	private List<Rental> rentals;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<CreditCard> creditCards;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Rental> rentals;
+		
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "cars"})
 @Table(name = "colors")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "cars"})
 public class Color {
 
 	@Id
@@ -34,6 +33,9 @@ public class Color {
 	@Column(name = "color_name")
 	private String colorName;
 	
-	@OneToMany(mappedBy = "color", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	
+	
+	@OneToMany(mappedBy = "color", cascade = CascadeType.ALL)
 	private List<Car> cars;
+	
 }

@@ -17,7 +17,6 @@ import lombok.Setter;
 public class UpdateBrandRequest implements Request {
 
 	@NotNull
-	@NotBlank
 	private int brandId;
 	
 	@NotNull
@@ -29,7 +28,6 @@ public class UpdateBrandRequest implements Request {
 	private String modelName;
 	
 	@NotNull
-	@NotBlank
 	private int modelYear;
 	
 }

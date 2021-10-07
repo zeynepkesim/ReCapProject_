@@ -13,13 +13,17 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "individual_customers")
+@EqualsAndHashCode(callSuper = false)
 public class IndividualCustomer extends Customer {
 
+	@NotNull
+	@Column(name = "national_id_number")
+	private String nationalIdNumber;
+	
 	@NotNull
 	@Column(name = "first_name")
 	private String firstName;
@@ -27,9 +31,5 @@ public class IndividualCustomer extends Customer {
 	@NotNull
 	@Column(name = "last_name")
 	private String lastName;
-	
-	@NotNull
-	@Column(name = "national_id_number")
-	private String nationalIdNumber;
-	
+		
 }

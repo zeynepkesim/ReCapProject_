@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdditionalServiceDto implements Dto {
+public class ColorDetailDto implements Dto {
 	
-	private int rentalId;
-	private String additionalServiceName;
-	private double additionalServiceFee;
+	private String colorName;
 
 }

@@ -2,6 +2,7 @@ package com.example.ReCapProject.entities.requests.city;
 
 import javax.validation.constraints.NotBlank;
 
+import com.example.ReCapProject.core.entities.abstracts.Request;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCityRequest {
+public class CreateCityRequest implements Request {
 
 	@NotNull
 	@NotBlank

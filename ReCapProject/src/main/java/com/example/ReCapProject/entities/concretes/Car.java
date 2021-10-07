@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,8 +28,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "rentals", "carMaintenances", "damageRecords"})
 @Table(name = "cars")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "damageRecords", "maintenances", "rentals"})
 public class Car {
 
 	@Id
@@ -36,15 +37,6 @@ public class Car {
 	@Column(name = "car_id")
 	private int carId;
 	
-	@Column(name = "daily_price")
-	private double dailyPrice;
-	
-	@Column(name = "min_findex_point")
-	private double minFindexPoint;
-	
-	@Column(name = "total_kilometer")
-	private long currentKilometer;
-		
 	@Nullable
 	@Column(name = "is_available", columnDefinition = "boolean default true")
 	private boolean isAvailable = true;
@@ -54,28 +46,40 @@ public class Car {
 	@Column(name = "description")
 	private String description;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@Column(name = "daily_price")
+	private double dailyPrice;
+	
+	@Column(name = "min_findex_point")
+	private double minFindexPoint;
+	
+	@Column(name = "current_kilometer")
+	private long currentKilometer;
+		
+	
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "color_id")
 	private Color color;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "city_id")
 	private City city;
-	
-	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-	private List<Rental> rentals;
+		
 	
 	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
 	private List<CarImage> carImages;
 	
 	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-	private List<Maintenance> carMaintenances;
+	private List<DamageRecord> damageRecords;
 	
 	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-	private List<DamageRecord> damageRecords;
+	private List<Maintenance> maintenances;
+		
+	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+	private List<Rental> rentals;
 	
 }

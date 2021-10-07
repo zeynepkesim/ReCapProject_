@@ -1,5 +1,6 @@
 package com.example.ReCapProject.business.concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,8 +8,9 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.ReCapProject.business.abstracts.ApplicationUserService;
 import com.example.ReCapProject.business.abstracts.CreditCardService;
-import com.example.ReCapProject.business.constants.Messages;
+import com.example.ReCapProject.business.constants.messages.CreditCardMessages;
 import com.example.ReCapProject.core.utilities.business.BusinessRules;
 import com.example.ReCapProject.core.utilities.results.DataResult;
 import com.example.ReCapProject.core.utilities.results.ErrorDataResult;
@@ -16,11 +18,10 @@ import com.example.ReCapProject.core.utilities.results.ErrorResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
-import com.example.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
 import com.example.ReCapProject.dataAccess.abstracts.CreditCardDao;
 import com.example.ReCapProject.entities.abstracts.ApplicationUser;
 import com.example.ReCapProject.entities.concretes.CreditCard;
-import com.example.ReCapProject.entities.dtos.CreditCardDto;
+import com.example.ReCapProject.entities.dtos.CreditCardDetailDto;
 import com.example.ReCapProject.entities.requests.creditCard.CreateCreditCardRequest;
 import com.example.ReCapProject.entities.requests.creditCard.DeleteCreditCardRequest;
 import com.example.ReCapProject.entities.requests.creditCard.UpdateCreditCardRequest;
@@ -29,14 +30,17 @@ import com.example.ReCapProject.entities.requests.creditCard.UpdateCreditCardReq
 public class CreditCardManager implements CreditCardService {
 
 	private CreditCardDao creditCardDao;
-	private ApplicationUserDao applicationUserDao;
+	
+	private ApplicationUserService applicationUserService;
 	
 	
 	@Autowired
-	public CreditCardManager(CreditCardDao creditCardDao, ApplicationUserDao applicationUserDao) {
+	public CreditCardManager(CreditCardDao creditCardDao, ApplicationUserService applicationUserService) {
 		
 		this.creditCardDao = creditCardDao;
-		this.applicationUserDao = applicationUserDao;
+		
+		this.applicationUserService = applicationUserService;
+		
 	}
 	
 
@@ -50,20 +54,22 @@ public class CreditCardManager implements CreditCardService {
 		if(result != null)
 			return result;
 		
-		ApplicationUser user = this.applicationUserDao.getById(entity.getUserId());
+		ApplicationUser user = this.applicationUserService.getById(entity.getUserId()).getData();
 		
 		CreditCard creditCard = new CreditCard();
-		creditCard.setCardName(entity.getCardName());
-		creditCard.setCreditCardNumber(entity.getCardNumber());
+		creditCard.setUser(user);
 		creditCard.setCvvCode(entity.getCvvCode());
 		creditCard.setExpireDate(entity.getExpireDate());
-		creditCard.setCardBeholderName(entity.getCardBeholderName());
-		creditCard.setUser(user);
+		creditCard.setCreditCardNumber(entity.getCardNumber());
+		creditCard.setCardBeholderName(entity.getCardBeholderName().toLowerCase().trim());
 		
-		if(entity.isSaveCard()) 
+		if(entity.isSaveCard()) {
+			if(checkIfCardAlreadyExists(entity.getCardNumber(), creditCard).isSuccess()) {
+				return new SuccessResult(CreditCardMessages.CREDIT_CARD_ALREADY_BEEN_SAVED);
+			}
 			this.creditCardDao.save(creditCard);
-		
-		return new SuccessResult(Messages.CREDIT_CARD_ADDED);
+		}	
+		return new SuccessResult(CreditCardMessages.CREDIT_CARD_ADDED);		
 	}
 	
 
@@ -73,17 +79,17 @@ public class CreditCardManager implements CreditCardService {
 		var result = BusinessRules.run(checkCreditCardNumber(entity.getCardNumber()), 
 				checkCreditCardCvv(entity.getCvvCode()), 
 				checkCreditCardExpiryDate(entity.getExpireDate()));
+		
 		if(result != null)
 			return result;
 		
 		CreditCard creditCard = this.creditCardDao.getById(entity.getCardId());
-		creditCard.setCardName(entity.getCardName());
-		creditCard.setCreditCardNumber(entity.getCardNumber());
 		creditCard.setCvvCode(entity.getCvvCode());
 		creditCard.setExpireDate(entity.getExpireDate());
+		creditCard.setCreditCardNumber(entity.getCardNumber());
 		
 		this.creditCardDao.save(creditCard);
-		return new SuccessResult(Messages.CREDIT_CARD_UPDATED);
+		return new SuccessResult(CreditCardMessages.CREDIT_CARD_UPDATED);
 		
 	}
 	
@@ -92,38 +98,52 @@ public class CreditCardManager implements CreditCardService {
 	public Result delete(DeleteCreditCardRequest entity) {
 		
 		this.creditCardDao.deleteById(entity.getCardId());
-		return new SuccessResult(Messages.CREDIT_CARD_DELETED);
+		return new SuccessResult(CreditCardMessages.CREDIT_CARD_DELETED);
+	}
+	
+	
+	@Override
+	public DataResult<CreditCard> getById(int creditCardId) {
+
+		return new SuccessDataResult<CreditCard>(this.creditCardDao.getById(creditCardId));
+		
 	}
 	
 
 	@Override
 	public DataResult<List<CreditCard>> getCreditCardsForUser(int userId) {
 		
-		if(!this.applicationUserDao.getById(userId).getCreditCards().isEmpty())
-			return new SuccessDataResult<List<CreditCard>>(this.applicationUserDao.getById(userId).getCreditCards(), Messages.CREDIT_CARD_LISTED);
-		
-		return new ErrorDataResult<List<CreditCard>>();
+		if(!this.applicationUserService.getById(userId).getData().getCreditCards().isEmpty()) {
+			return new SuccessDataResult<List<CreditCard>>(this.applicationUserService.getById(userId).getData().getCreditCards(), CreditCardMessages.CREDIT_CARD_LISTED);
+		}
+		return new ErrorDataResult<List<CreditCard>>();		
 	}
 		
 		
 	@Override
-	public DataResult<List<CreditCardDto>> getCreditCardDetails(int userId) {
+	public DataResult<List<CreditCardDetailDto>> getCreditCardDetails(int userId) {
 		
-		return new SuccessDataResult<List<CreditCardDto>>(this.creditCardDao.getCreditCardDetails(userId));
-	}
-	
-	
-	@Override
-	public Result checkCardInfo(CreateCreditCardRequest card) {
+		List<CreditCard> creditCards = this.creditCardDao.getByUser_UserId(userId);
 		
-		if(card.getCardName().isBlank() && card.getCardNumber().isBlank() && card.getCvvCode().isBlank() && card.getExpireDate().isBlank())	
-			return new ErrorResult();
-
-		return new SuccessResult();
+		List<CreditCardDetailDto> creditCardDtos = new ArrayList<CreditCardDetailDto>();
+		
+		for (CreditCard creditCard : creditCards) {
+			
+			CreditCardDetailDto creditCardDto = new CreditCardDetailDto();
+			creditCardDto.setUserId(creditCard.getUser().getUserId());
+			creditCardDto.setCardBeholderName(creditCard.getCardBeholderName());
+			creditCardDto.setCreditCardNumber(creditCard.getCreditCardNumber());
+			creditCardDto.setCvvCode(creditCard.getCvvCode());
+			creditCardDto.setExpireDate(creditCard.getExpireDate());
+			
+			creditCardDtos.add(creditCardDto);
+		}
+		
+		return new SuccessDataResult<List<CreditCardDetailDto>>(creditCardDtos, CreditCardMessages.CREDIT_CARD_LISTED);
 	}	
 	
 	
-	// Card Validation rules!
+	//Card Validation rules!
 	private Result checkCreditCardNumber(String creditCardNumber) {
 
 		String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" + 
@@ -137,9 +157,10 @@ public class CreditCardManager implements CreditCardService {
 		Matcher matcher = pattern.matcher(creditCardNumber);
 
 		if (!matcher.matches()) 
-			return new ErrorResult(Messages.CREDIT_CARD_IS_INVALID);
+			return new ErrorResult(CreditCardMessages.CREDIT_CARD_IS_INVALID);
 		
 		return new SuccessResult();
+		
 	}
 	
 	
@@ -151,9 +172,10 @@ public class CreditCardManager implements CreditCardService {
 		Matcher matcher = pattern.matcher(cvv);
 
 		if (!matcher.matches()) 
-			return new ErrorResult(Messages.CREDIT_CARD_IS_INVALID);
+			return new ErrorResult(CreditCardMessages.CREDIT_CARD_IS_INVALID);
 		
 		return new SuccessResult();
+		
 	}
 	
 	
@@ -165,9 +187,20 @@ public class CreditCardManager implements CreditCardService {
 		Matcher matcher = pattern.matcher(expiryDate);
 
 		if (!matcher.matches()) 
-			return new ErrorResult(Messages.CREDIT_CARD_IS_INVALID);
+			return new ErrorResult(CreditCardMessages.CREDIT_CARD_IS_INVALID);
 		
 		return new SuccessResult();
+		
+	}
+	
+	
+	private Result checkIfCardAlreadyExists(String creditCardNumber, CreditCard creditCard) {
+		
+		if(this.creditCardDao.getByCreditCardNumber(creditCardNumber) != null 
+				&& this.creditCardDao.getByCreditCardNumber(creditCardNumber).getUser() == creditCard.getUser()) {
+			return new SuccessResult();
+		}
+		return new ErrorResult();
 	}
 
 }

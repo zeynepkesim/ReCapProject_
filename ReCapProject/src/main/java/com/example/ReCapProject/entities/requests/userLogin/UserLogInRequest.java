@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLogInRequest implements Request{
+public class UserLogInRequest implements Request {
 
 	@NotNull
 	@NotBlank

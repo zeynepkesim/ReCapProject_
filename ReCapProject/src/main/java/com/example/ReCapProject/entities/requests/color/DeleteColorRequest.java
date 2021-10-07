@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteColorRequest implements Request{
+public class DeleteColorRequest implements Request {
 
 	@NotNull
 	private int colorId;

@@ -1,15 +1,17 @@
 package com.example.ReCapProject.core.services;
 
-// OutService(Bank)
+//OutService (Bank)
+
 public class PosOutService {
 
 	public boolean posService(String cardBeholderName, String cardNumber, String cvvCode, String expireDate, double price) {
 		
-		double cardBalance = 5000;	// Simulation 
+		double cardBalance = 5000;   //Simulation 
 		
-		if(cardBalance <= price)
+		if(cardBalance <= price) {
 			return false;
-		
+		}		
 		return true;
 	}
+	
 }

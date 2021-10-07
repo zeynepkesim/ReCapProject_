@@ -3,22 +3,26 @@ package com.example.ReCapProject.business.concretes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.ReCapProject.business.abstracts.ApplicationUserService;
 import com.example.ReCapProject.business.abstracts.LogInService;
+import com.example.ReCapProject.business.constants.messages.LogInMessages;
 import com.example.ReCapProject.core.utilities.business.BusinessRules;
 import com.example.ReCapProject.core.utilities.results.ErrorResult;
 import com.example.ReCapProject.core.utilities.results.Result;
 import com.example.ReCapProject.core.utilities.results.SuccessResult;
-import com.example.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
 import com.example.ReCapProject.entities.requests.userLogin.UserLogInRequest;
 
 @Service
 public class LogInManager implements LogInService{
 
-	private ApplicationUserDao applicationUserDao;
+	private ApplicationUserService applicationUserService;
+	
 	
 	@Autowired
-	public LogInManager(ApplicationUserDao applicationUserDao) {
-		this.applicationUserDao = applicationUserDao;
+	public LogInManager(ApplicationUserService applicationUserService) {
+		
+		this.applicationUserService = applicationUserService;
+		
 	}
 
 
@@ -30,18 +34,21 @@ public class LogInManager implements LogInService{
 		if(result != null)
 			return result;
 		
-		if(applicationUserDao.getByEmail(logInRequest.getEmail()).getPassword().equals(logInRequest.getPassword()))
-			return new SuccessResult("You have successfully logged in!");
+		if(applicationUserService.getByEmail(logInRequest.getEmail()).getData().getPassword().equals(logInRequest.getPassword()))
+			return new SuccessResult(LogInMessages.SUCCESSFULLY_LOGGED_IN);
 		
-		return new ErrorResult("User Email or Password is wrong!");
+		return new ErrorResult(LogInMessages.USER_INFO_INVALID);
 		
 	}
 	
+	
 	public Result isUserExists(String email) {
-		if(applicationUserDao.existsByEmail(email))
+		
+		if(applicationUserService.existsByEmail(email).isSuccess())
 			return new SuccessResult();
 		
-		return new ErrorResult("User does't exist!");
+		return new ErrorResult(LogInMessages.USER_DOES_NOT_EXIST);
+		
 	}
 
 }
